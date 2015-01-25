@@ -53,7 +53,7 @@ Map map = new Map();
 
 //Main folder of the project containing all the necessary data to draw the map
 //String mainFolder = "D:\\Cloud\\Copy\\Copy\\Projects\\Processing\\WorldMap data\\Map 1";
-String mainFolder = "D:/Cours/INF229/WorldMap/Map 1";
+String mainFolder = "D:/Cours/INF229/datavisualization/Data";
 
 //Colors of the countries, modify this to get a more beautiful map :D
 color[] countryColors = new color[]{color(255, 0, 136, 255), color(0, 140, 0, 255), color(255, 0, 0, 255),
