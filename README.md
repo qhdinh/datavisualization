@@ -1,5 +1,5 @@
 # datavisualization
-Data visualization TP
+WorldMap Project
 
 Assign var "mainFolder" in WorldMap.pde the absolute path to folder "Data"
 
