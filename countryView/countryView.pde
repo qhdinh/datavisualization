@@ -40,18 +40,7 @@ int pmode = 0;         // previous mode
 CategorySelector catSelector1, catSelector2;
 
 void setup() {
-    size(840, 640);
-    fulldata = new DataRead("c:/factbook.csv");
-    catSelector1 = new CategorySelector(fulldata, width -200, 20);
-    catSelector2 = new CategorySelector(fulldata, width -200, 50);
 
-    smooth();
-    data[0] = data1;
-    dataColors[0] = color(255,150,5);
-    dataLabels[0] = "USA";
-    data[1] = data2;
-    dataColors[1] = color(5,150,150);
-    dataLabels[1] = "UK";
 }
 
 void draw() {

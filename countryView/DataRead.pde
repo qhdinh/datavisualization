@@ -71,22 +71,19 @@ class DataRead{
     try {
       
       String sCurrentLine;
+      String [] doc = loadStrings(filename);
       String [] items;
-      br = new BufferedReader(new FileReader(filename));
-      sCurrentLine = br.readLine();
-      items = sCurrentLine.split(";");
+      items = doc[0].split(";");
       this.columns = Arrays.asList(items);
-      sCurrentLine = br.readLine();
-      items = sCurrentLine.split(";");
+      items = doc[1].split(";");
       this.columnTypes = Arrays.asList(items);
       
-      while ((sCurrentLine = br.readLine()) != null) {
-          items = sCurrentLine.split(";");
-          this.data.add(Arrays.asList(items));
+      for(int i = 2; i < doc.length; i++){
+          items = doc[i].split(";");
+          this.data.add(Arrays.asList(items));      
+      
       }
- 
-    } catch (IOException e) {
-      e.printStackTrace();
+
     } finally {
  
       try {
