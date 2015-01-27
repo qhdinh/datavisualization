@@ -44,7 +44,7 @@ class CategorySelector{
        isopen = !isopen;   
     }
     if(isopen && x > posx && x < posx + 180 && y > posy+20 && y < posy + 220){
-       int i = y - posy - 35;
+       int i = y - posy;
        i = i/16;
        System.out.println("new code = " + (i + (int)max(0,selectedCode-5)) + " i = " + i + " scode = " + selectedCode);
        selectedCode = i + max(0,selectedCode-5);
