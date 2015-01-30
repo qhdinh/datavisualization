@@ -42,29 +42,19 @@ void draw() {
   
   dataplot = fulldata.getData(catSelector1.getCode(), catSelector2.getCode());
 
-  if(isLogPlot){
-      maxX = log(fulldata.getMaxX(dataplot));
-      minX = log(fulldata.getMinX(dataplot));
-      maxY = log(fulldata.getMaxY(dataplot));
-      minY = log(fulldata.getMinY(dataplot));
-      System.out.println(maxX + " - "+ minX);
-      
-      System.out.println(maxY + " - "+ minY);
-      
-  }else{
-      maxX = fulldata.getMaxX(dataplot);
-      minX = fulldata.getMinX(dataplot);
-      maxY = fulldata.getMaxY(dataplot);
-      minY = fulldata.getMinY(dataplot);
-  }
+  maxX = fulldata.getMaxX(dataplot);
+  minX = fulldata.getMinX(dataplot);
+  maxY = fulldata.getMaxY(dataplot);
+  minY = fulldata.getMinY(dataplot);
+  
   
   fill(220,130,150,150);
   for(DataPoint dp : dataplot){
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
       if(isLogPlot){
-          x = (log(dp.x) - minX)/(maxX-minX);
-          y = 1-(log(dp.y) - minY)/(maxY-minY);
+          x = log(dp.x - minX)/log(maxX-minX);
+          y = 1-log(dp.y - minY)/log(maxY-minY);
       }
       if(dp.name.equals(selectedName)){
         ellipse( x*(width-230) + 15, y*(height-35)+17, 10, 10 );
@@ -96,8 +86,8 @@ void mouseMoved(){
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
       if(isLogPlot){
-        x = (log(dp.x) - minX)/(maxX-minX);
-        y = y = 1-(log(dp.y) - minY)/(maxY-minY);
+        x = log(dp.x - minX)/log(maxX-minX);
+        y = y = 1-log(dp.y - minY)/log(maxY-minY);
       }
      x = x*(width-230) + 15;
      y = y*(height-35)+17;
