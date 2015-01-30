@@ -18,8 +18,8 @@ CategorySelector catSelector1, catSelector2;
 void setup() {
     size(840, 640);
     fulldata = new DataRead("c:/factbook.csv");
-    catSelector1 = new CategorySelector(fulldata, width -200, 20);
-    catSelector2 = new CategorySelector(fulldata, width -200, 50);
+    catSelector1 = new CategorySelector(fulldata, width -200, 20, "X axis");
+    catSelector2 = new CategorySelector(fulldata, width -200, 55, "Y axis");
 
     smooth();
 }
@@ -42,10 +42,17 @@ void draw() {
   
   dataplot = fulldata.getData(catSelector1.getCode(), catSelector2.getCode());
 
-  maxX = fulldata.getMaxX(dataplot);
-  minX = fulldata.getMinX(dataplot);
-  maxY = fulldata.getMaxY(dataplot);
-  minY = fulldata.getMinY(dataplot);
+  if(isLogPlot){
+      maxX = log(fulldata.getMaxX(dataplot));
+      minX = log(fulldata.getMinX(dataplot));
+      maxY = log(fulldata.getMaxY(dataplot));
+      minY = log(fulldata.getMinY(dataplot));
+  }else{
+      maxX = fulldata.getMaxX(dataplot);
+      minX = fulldata.getMinX(dataplot);
+      maxY = fulldata.getMaxY(dataplot);
+      minY = fulldata.getMinY(dataplot);
+  }
   
   fill(220,130,150,150);
   for(DataPoint dp : dataplot){
@@ -60,7 +67,6 @@ void draw() {
         fill(0);
         text(dp.name, x*(width-230) + 15, y*(height-35)+17);
         fill(220,130,150,150);
-        System.out.println("Plotting bold point");
       }else{
         ellipse( x*(width-230) + 15, y*(height-35)+17, 5, 5 );
       
@@ -75,6 +81,10 @@ void draw() {
 void mouseMoved(){
    if(dataplot == null) return;
    float max = 10;
+   
+   catSelector2.mouseOver(mouseX,mouseY);
+   catSelector1.mouseOver(mouseX,mouseY);
+   
    DataPoint selectedDP = null;
    for(DataPoint dp : dataplot){
       float x = (dp.x - minX)/(maxX-minX);
@@ -93,9 +103,6 @@ void mouseMoved(){
   }
   if(max < 3){
     selectedName = selectedDP.name;
-    System.out.println("setting bold " + selectedDP.name);
-//  }else{
-//    selectedDP.isBold = false;
   }
 }
 

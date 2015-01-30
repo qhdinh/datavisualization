@@ -25,6 +25,10 @@ class DataRead{
     return dlist; 
   }
   
+  public int getNCategories(){
+    return columnTypes.size() -1;
+  }
+  
   public float getMaxX(ArrayList<DataPoint> data){
       float maxx = data.get(0).x;
       for(DataPoint d : data){
