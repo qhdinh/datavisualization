@@ -1,6 +1,5 @@
 
-
-String[] crisele;
+Criteria[] crisele;
 Country[] counsele;
 int crinum = 0;
 int counnum = 0;
@@ -25,60 +24,58 @@ Label mouseclickcell=null;
 int uselog = 0;
 int nupdown = 0;
 int nleftright = 0;
+DataRead datasets = null;
 
 
 void setup(){
   size(500,500);
   //background(255);
+  datasets = new DataRead();
   counsele = new Country[263];
   ///////////////////////////////////initialisation manually
-  Country c1 = new Country("Albania", 3563112, 28748,15.08,5.12,-504000000);
-  Country c2 = new Country("Argentina", 39537943, 2766890,16.90,7.56,5473000000.0);
-  Country c3 = new Country("Belgium", 10364388, 30528,10.48,10.22,11400000000.0);
-  Country c4 = new Country("Brazil",186112794,8511965,16.83,6.15,8000000000.0);
-  Country c5 = new Country("China",1306313812,9596960,13.14,6.94,30320000000.0);
-  Country c6 = new Country("France",60656178,547030,12.15,9.08,-305000000.0);
-  Country c7 = new Country("Vietnam",83535576,329560,17.07,6.20,-2061000000.0);
-  
-  counsele[0]= c1;
+  /*Country c1 = new Country("Albania", 0);
+  Country c2 = new Country("Argentina", 1);
+  Country c3 = new Country("Belgium", 2);
+  Country c4 = new Country("Brazil",3);
+  Country c5 = new Country("China",4);
+  Country c6 = new Country("France",5);
+  Country c7 = new Country("Vietnam",6);*/
+  int i,j;
+  for(i=0;i<263;i++){
+    Country c = new Country(datasets.counname[i].name,i);
+    counsele[i]=c;
+  }
+   
+  /*counsele[0]= c1;
   counsele[1]= c2;
   counsele[2]= c3;
   counsele[3]= c4;
   counsele[4]= c5;
   counsele[5]= c6;
-  counsele[6]= c7;
+  counsele[6]= c7;*/
   
-  /*counsele[7]= c1;
-  counsele[8]= c2;
-  counsele[9]= c3;
-  counsele[10]= c4;
-  counsele[11]= c5;
-  counsele[12]= c6;
-  counsele[13]= c7;
-  counsele[14]= c1;
-  counsele[15]= c2;
-  counsele[16]= c3;
-  counsele[17]= c4;
-  counsele[18]= c5;
-  counsele[19]= c6;
-  counsele[20]= c7;
-  counsele[21]= c1;
-  counsele[22]= c2;
-  counsele[23]= c3;
-  counsele[24]= c4;
-  counsele[25]= c5;
-  counsele[26]= c6;
-  counsele[27]= c7;*/
+  
   
   //println(counsele[0].name);
   if(counsele[1]==null)println("1=null");
-  crisele = new String[45];
+  crisele = new Criteria[44];
   ////////////////////////////////////initialisation manually
-  crisele[0]="population";
-  crisele[1]="area";
-  crisele[2]="birthrate";
-  crisele[3]="deathrate";
-  crisele[4]="current_account_balance";
+  Criteria cr1 = new Criteria("Population",0);
+  Criteria cr2 = new Criteria("Area(sq km)",0);
+  Criteria cr3 = new Criteria("Birth rate(births/1000 population)",1);
+  Criteria cr4 = new Criteria("Death rate(deaths/1000 population)",3);
+  Criteria cr5 = new Criteria("Current account balance",36);
+  
+  for(i=0;i<44;i++){
+    Criteria cri = new Criteria(datasets.criteria[i].name,i);
+    crisele[i]=cri;
+  }
+  
+  /*crisele[0]=cr1;
+  crisele[1]=cr2;
+  crisele[2]=cr3;
+  crisele[3]=cr4;
+  crisele[4]=cr5;*/
   
 }
 
@@ -90,13 +87,19 @@ void draw(){
   drawylabel();
   drawcell();
   drawlines();
-  drawmousemove();
   //translate(-xgap*nleftright,-ygap*nupdown);
   //mymask();
-  if(keyCode==UP || keyCode==DOWN)updownmask();
-  if(keyCode==LEFT || keyCode==RIGHT)lrmask();
+  //if(keyCode==UP || keyCode==DOWN)updownmask();
+  //if(keyCode==LEFT || keyCode==RIGHT)lrmask();
+  //mymask();
+  drawmousemovelabel();
   mymask();
   drawaxis();
+  drawmousemovecell();
+  //println(datasets.getData(0,2)+","+datasets.getCricode("Area(sq km)")+","+datasets.getCouncode("Albania")+"Aou...");
+  //println(datasets.getData(datasets.getCricode("Area(sq km)"),datasets.getCouncode("Albania")));
+  //println("crinum="+crinum);
+  //println("nupdown="+nupdown);
 }
 
 void findscale(){
@@ -107,7 +110,7 @@ void findscale(){
   counnum = i;
   //println("country="+counnum);
   i=0;
-  for(String s : crisele){
+  for(Criteria s : crisele){
     if(s!=null)i++;
   }
   crinum = i;
@@ -116,6 +119,7 @@ void findscale(){
   x=xlent*1.0/crinum;
   if(x>xgapMin)xgap=(int)x;
   else xgap=xgapMin;
+  //println("xgap="+xgap);
 }
 
 void drawaxis(){
@@ -139,12 +143,14 @@ void drawaxis(){
 }
 
 void drawylabel(){
-  ylabel = new Label[counnum+1];
+  int i,j,ylabelnum;
+  if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+  else ylabelnum=counnum;
+  ylabel = new Label[ylabelnum+1];
   Label ylabelcoun = new Label(0);
   ylabel[0]=ylabelcoun;
   ylabel[0].draw("country",0);
-  int i,j;
-  for(i=-nupdown;i<counnum;i++){
+  for(i=-nupdown;i<ylabelnum;i++){
     Label ylabeltemp = new Label(0);
     ylabel[i+1]=ylabeltemp;
     ylabel[i+1].draw(counsele[i].name,i+1+nupdown);
@@ -153,12 +159,14 @@ void drawylabel(){
 }
 
 void drawxlabel(){
-  int i,j;
-  xlabel = new Label[crinum];
-  for(i=-nleftright;i<crinum;i++){
+  int i,j,xlabelnum;
+  if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+  else xlabelnum=crinum;
+  xlabel = new Label[xlabelnum];
+  for(i=-nleftright;i<xlabelnum;i++){
     Label xlabeltemp = new Label(1);
     xlabel[i]=xlabeltemp;
-    xlabel[i].draw(crisele[i],i+nleftright);
+    xlabel[i].draw(crisele[i].name,i+nleftright);
     //stroke(120);
     //line(70+i*xgap,50,70+i*xgap,450);
   }
@@ -167,15 +175,19 @@ void drawxlabel(){
 
 }
 
-void drawmousemove(){
-  int i,j;
+void drawmousemovelabel(){
+  int i,j,ylabelnum,xlabelnum;
   if(mousemovelabel!=null){
     mousemovelabel.draw();
     if(mousemovelabel.axis==1){
-      for(i=-nleftright;i<crinum;i++){
+      if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+      else ylabelnum=counnum;
+      if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+      else xlabelnum=crinum;
+      for(i=-nleftright;i<xlabelnum;i++){
         if(xlabel[i].name==mousemovelabel.name){
-          for(j=-nupdown;j<counnum;j++){
-            cells[i*counnum+j].draw();
+          for(j=-nupdown;j<ylabelnum;j++){
+            cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].draw();
           }
         } 
       }
@@ -184,75 +196,96 @@ void drawmousemove(){
   if(mousemovelabel!=null){
     mousemovelabel.draw();
     if(mousemovelabel.axis==0){
-      for(j=1-nupdown;j<counnum+1;j++){
+      if(counnum+1>1-nupdown+19)ylabelnum=1-nupdown+19;
+      else ylabelnum=counnum+1;
+      if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+      else xlabelnum=crinum;
+      for(j=1-nupdown;j<ylabelnum;j++){
         if(ylabel[j].name==mousemovelabel.name){
-          for(i=-nleftright;i<crinum;i++){
-            cells[i*counnum+j-1].draw();
+          for(i=-nleftright;i<xlabelnum;i++){
+            cells[(i+nleftright)*(ylabelnum+nupdown-1)+(j-1+nupdown)].draw();
           }
         } 
       }
     }
   }
+  
+}
+
+void drawmousemovecell(){
+  int i,j;
+  if(mousemovecell!=null && mousemovecell.contains(mouseX,mouseY)==true){
+    float s;
+    s=(float)(mousemovecell.value);
+    mousemovecell.draw();
+    if(mousemovecell.value>=0){
+      fill(126,192,238);
+    }
+    else{
+      fill(240,128,128);
+    }
+    noStroke();
+    textFont(labelFont1,14);
+    String ss=str(s);
+    if(ss.equals("NaN")){
+      ss="no Value";
+    }
+    rect(mouseX,mouseY-15,textWidth(ss),ygap,3,3,3,3);
+    //text(mousemovecell.name,mouseX,mouseY);
+    fill(255);
+    
+    text(ss,mouseX,mouseY);
+    //println(mousemovecell.value);
+    
+  }
 
 }
 
 void drawcell(){
-  int i,j;
-  cells = new Cell[counnum*crinum];
-  for(i=-nleftright;i<crinum;i++){
-    for(j=-nupdown;j<counnum;j++){
+  int i,j,ylabelnum,xlabelnum;
+  if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+  else ylabelnum=counnum;
+  if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+  else xlabelnum=crinum;
+  cells = new Cell[(ylabelnum+nupdown)*(xlabelnum+nleftright)];
+  for(i=-nleftright;i<xlabelnum;i++){
+    for(j=-nupdown;j<ylabelnum;j++){
       Cell cell = new Cell(j+nupdown,i+nleftright);
-      cells[i*counnum+j]=cell;
+      cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)]=cell;
     }
   }  
 }
 
 void drawlines(){
    
-   int i,j;
+   int i,j,ylabelnum,xlabelnum;
    int llent=0;
    double lmax=0;
+   double t;
+   if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+   else ylabelnum=counnum;
+   if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+   else xlabelnum=crinum;
    //cells = new Cell[counnum*crinum];
-   for(i=-nleftright;i<crinum;i++){
-     for(j=-nupdown;j<counnum;j++){
+   for(i=-nleftright;i<xlabelnum;i++){
+     lmax=findmax(crisele[i].name);
+     //println(crisele[i].name+"="+lmax);
+     for(j=-nupdown;j<ylabelnum;j++){
         Cell cell = new Cell(j+nupdown,i+nleftright);
-        if(crisele[i]=="population"){
-          lmax=findmax("population");
-          //println(lmax);
-          if(uselog==0)llent = (int)(counsele[j].population*0.8/lmax*xgap);
-          else if(uselog==1)llent = (int)(log((float)counsele[j].population)*0.8/log((float)lmax)*xgap);
-          cell.setcont(crisele[i],counsele[j].population,counsele[j].name);
-        }
-        if(crisele[i]=="area"){
-          lmax=findmax("area");
-          if(uselog==0)llent = (int)(counsele[j].area*0.8/lmax*xgap);
-          else if(uselog==1)llent = (int)(log((float)counsele[j].area)*0.8/log((float)lmax)*xgap);
-          cell.setcont(crisele[i],counsele[j].area,counsele[j].name);
-        }
-        if(crisele[i]=="birthrate"){
-          lmax=findmax("birthrate");
-          if(uselog==0)llent = (int)(counsele[j].birthrate*0.8/lmax*xgap);
-          else if(uselog==1)llent = (int)(log((float)counsele[j].birthrate)*0.8/log((float)lmax)*xgap);
-          cell.setcont(crisele[i],counsele[j].birthrate,counsele[j].name);
-        }
-        if(crisele[i]=="deathrate"){
-          lmax=findmax("deathrate");
-          if(uselog==0)llent = (int)(counsele[j].deathrate*0.8/lmax*xgap);
-          else if(uselog==1)llent = (int)(log((float)counsele[j].deathrate)*0.8/log((float)lmax)*xgap);
-          cell.setcont(crisele[i],counsele[j].deathrate,counsele[j].name);
-        }
-        if(crisele[i]=="current_account_balance"){
-          lmax=findmax("current_account_balance");
-          if(uselog==0)llent = (int)(counsele[j].current_account_balance*0.8/lmax*xgap);
-          else if(uselog==1){
-            if(counsele[j].current_account_balance<0){
-              llent = (int)(-log((float)-counsele[j].current_account_balance)*0.8/log((float)lmax)*xgap);
-            }
-            else llent = (int)(log((float)counsele[j].current_account_balance)*0.8/log((float)lmax)*xgap);
+        cell.setcont(crisele[i].name,datasets.getData(datasets.getCricode(crisele[i].name),datasets.getCouncode(counsele[j].name)),counsele[j].name);
+        t=datasets.getData(datasets.getCricode(crisele[i].name),datasets.getCouncode(counsele[j].name));
+        if(uselog==0)llent=(int)(t*0.8/lmax*xgap);
+        else if(uselog==1){
+          //t=t*100;
+          //lmax=lmax*100;//!!!!!!!!!!!!!!!!!!!deform!!!!!!!!!!!!
+          if(t<0){
+            llent=(int)(-log((float)-t)*0.8/log((float)lmax)*xgap);
           }
-          cell.setcont(crisele[i],counsele[j].current_account_balance,counsele[j].name);
+          else if(t>0)llent=(int)(log((float)t)*0.8/log((float)lmax)*xgap);
+          else llent=0;
         }
-        cells[i*counnum+j]=cell;
+        
+        cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)]=cell;
         noStroke();
         if(llent<0){
           llent = - llent;
@@ -265,85 +298,46 @@ void drawlines(){
    
   if(mouseclicklabel!=null){
     if(mouseclicklabel.axis==0){
-      for(j=1-nupdown;j<counnum+1;j++){
+      if(counnum+1>1-nupdown+19)ylabelnum=1-nupdown+19;
+      else ylabelnum=counnum+1;
+      if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+      else xlabelnum=crinum;
+      for(j=1-nupdown;j<ylabelnum;j++){
         if(ylabel[j].name==mouseclicklabel.name){
-          for(i=-nleftright;i<crinum;i++){
-            cells[i*counnum+j-1].showvalue();
+          for(i=-nleftright;i<xlabelnum;i++){
+            cells[(i+nleftright)*(ylabelnum+nupdown-1)+(j-1+nupdown)].showvalue();
           }
         } 
       }
     }
     if(mouseclicklabel.axis==1){
-      for(i=-nleftright;i<crinum;i++){
+      if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+      else ylabelnum=counnum;
+      if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+      else xlabelnum=crinum;
+      for(i=-nleftright;i<xlabelnum;i++){
         if(xlabel[i].name==mouseclicklabel.name){
-          for(j=-nupdown;j<counnum;j++){
-            cells[i*counnum+j].showvalue();
+          for(j=-nupdown;j<ylabelnum;j++){
+            cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].showvalue();
           }
         } 
       }
     }
-  }
-  if(mousemovecell!=null){
-      float s;
-      s=(float)(mousemovecell.value);
-      mousemovecell.draw();
-      if(mousemovecell.value>=0){
-        fill(126,192,238);
-      }
-      else{
-        fill(240,128,128);
-      }
-      noStroke();
-      rect(mouseX,mouseY-15,xgap+40,ygap,3,3,3,3);
-      //text(mousemovecell.name,mouseX,mouseY);
-      fill(255);
-      text(s,mouseX,mouseY);
-      //println(mousemovecell.value);
-    
-  }
-  
-   
+  }   
 }
 
 double findmax(String str){
    double max=0;
+   double t;
    int i;
    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!try to use the reflection of JAVA
    //Class cla = Class.forName("com.hhf.reflect.DataFunc");
    //Field[] field = cla.getDeclaredFields();
-   if(str=="population"){
-     for(i=0;i<counnum;i++){
-       if(counsele[i].population>max){
-         max=counsele[i].population;
-       }
-     }
-   }
-   if(str=="area"){
-     for(i=0;i<counnum;i++){
-       if(counsele[i].area>max){
-         max=counsele[i].area;
-       }
-     }
-   }
-   if(str=="birthrate"){
-     for(i=0;i<counnum;i++){
-       if(counsele[i].birthrate>max){
-         max=counsele[i].birthrate;
-       }
-     }
-   }
-   if(str=="deathrate"){
-     for(i=0;i<counnum;i++){
-       if(counsele[i].deathrate>max){
-         max=counsele[i].deathrate;
-       }
-     }
-   }
-   if(str=="current_account_balance"){
-     for(i=0;i<counnum;i++){
-       if(counsele[i].current_account_balance>max){
-         max=counsele[i].current_account_balance;
-       }
+   for(i=0;i<counnum;i++){
+     t=datasets.getData(datasets.getCricode(str),datasets.getCouncode(counsele[i].name));
+     if(t<0)t=-t;
+     if(t>max){
+       max=t;
      }
    }
    return max;
@@ -352,87 +346,98 @@ double findmax(String str){
 //////////////////////mouse interactive///////////////
 void mouseMoved(){
    //try in the labels
-   int i,j;
+   mousemovelabel=null;
+   int i,j,ylabelnum,xlabelnum;
    //ylabel;
-   for(i=-nupdown+1;i<counnum+1;i++){
-     if(ylabel[i].contains(mouseX,mouseY)==true){
-       if(ylabel[i].sele==0){
-         ylabel[i].setstate(1);
+   if(mouseX>=0 && mouseX<450 && mouseY>=0 && mouseY<450){
+     if(counnum>-nupdown+20)ylabelnum=-nupdown+20;
+     else ylabelnum=counnum;
+     for(i=-nupdown+1;i<ylabelnum;i++){
+       if(ylabel[i].contains(mouseX,mouseY)==true){
+         if(ylabel[i].sele==0){
+           ylabel[i].setstate(1);
+         }
+         mousemovelabel= ylabel[i];
+         mousemovecell=null;
        }
-       mousemovelabel= ylabel[i];
-       mousemovecell=null;
-     }
-     else if(ylabel[i].sele==1){
-       ylabel[i].setstate(0);
-       mousemovecell=null;
-     }
-   }
-   //xlabel
-   for(i=-nleftright;i<crinum;i++){
-     if(xlabel[i].contains(mouseX,mouseY)==true){
-       if(xlabel[i].sele==0){
-         xlabel[i].setstate(1);
+       else if(ylabel[i].sele==1){
+         ylabel[i].setstate(0);
+         mousemovecell=null;
        }
-       mousemovelabel= xlabel[i];
-       mousemovecell=null;
      }
-     else if(xlabel[i].sele==1){
-       xlabel[i].setstate(0);
-       mousemovelabel=null;
+     //xlabel
+     if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+     else xlabelnum=crinum;
+     for(i=-nleftright;i<xlabelnum;i++){
+       if(xlabel[i].contains(mouseX,mouseY)==true){
+         if(xlabel[i].sele==0){
+           xlabel[i].setstate(1);
+         }
+         mousemovelabel= xlabel[i];
+         mousemovecell=null;
+       }
+       else if(xlabel[i].sele==1){
+         xlabel[i].setstate(0);
+         mousemovelabel=null;
+       }
      }
-   }
-
-   //cell
-  for(i=-nleftright;i<crinum;i++)
-    for(j=-nupdown;j<counnum;j++){
-      if(cells[i*counnum+j].contains(mouseX,mouseY)==true){
-        if(cells[i*counnum+j].sele==0){
-          mousemovecell= cells[i*counnum+j];
-          mousemovelabel=null;
-          cells[i*counnum+j].setstate(1);  
+  
+     //cell
+    if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+    else ylabelnum=counnum;
+    for(i=-nleftright;i<xlabelnum;i++)
+      for(j=-nupdown;j<ylabelnum;j++){
+        if(cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].contains(mouseX,mouseY)==true){
+          if(cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].sele==0){
+            mousemovecell= cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)];
+            mousemovelabel=null;
+            cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].setstate(1);  
+          }
+  
         }
-
-      }
-      else if(cells[i*counnum+j].sele==1){
-        cells[i*counnum+j].setstate(0); 
-        mousemovecell=null;
-      }
-   } 
-
-   //if(l!=null && l!=lastlabel)println("I choose a label:"+l.name);
-   //else if(c!=null && l!=lastlabel)println("I choose a cell:"+c.name+","+c.cri);
-  // else if(l==null&&l!=lastlabel)println("nothing I choose"); 
-   /*if(lastlabel==null){
-     //if(mousemovelabel!=null)println(mousemovelabel.name+","+mousemovelabel.sele);
-   }
-   else if(mousemovelabel!=null){//i don't know why can't compare the objet directly in fact it should compare the name!
-     if(mousemovelabel.name!=lastlabel.name){
-       //println(mousemovelabel.name+","+mousemovelabel.sele);
-       //if(lastlabel!=null)println("lastlabel="+lastlabel.name);
-       //if(mousemovelabel==lastlabel)println("the same");
-       //text(mousemovelabel.name,10,300);
+        else if(cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].sele==1){
+          cells[(i+nleftright)*(ylabelnum+nupdown)+(j+nupdown)].setstate(0); 
+          mousemovecell=null;
+        }
+     } 
+  
+     //if(l!=null && l!=lastlabel)println("I choose a label:"+l.name);
+     //else if(c!=null && l!=lastlabel)println("I choose a cell:"+c.name+","+c.cri);
+    // else if(l==null&&l!=lastlabel)println("nothing I choose"); 
+     /*if(lastlabel==null){
+       //if(mousemovelabel!=null)println(mousemovelabel.name+","+mousemovelabel.sele);
      }
-   }
-   //lastcell=c;
-   if(lastcell==null){
-     //if(mousemovecell!=null)println("I choose a cell:"+mousemovecell.name+","+mousemovecell.cri);
-   }
-   else if(mousemovecell!=null){
-       if(mousemovecell.name!=lastcell.name ){
-         //println("I choose a cell:"+mousemovecell.name+","+mousemovecell.cri+mousemovecell.sele);
-         //if(lastcell!=null)println("lastcell:"+lastcell.name+","+lastcell.cri);
-         //text("I choose a cell:"+mousemovecell.name+","+mousemovecell.cri,mouseX,mouseY);
+     else if(mousemovelabel!=null){//i don't know why can't compare the objet directly in fact it should compare the name!
+       if(mousemovelabel.name!=lastlabel.name){
+         //println(mousemovelabel.name+","+mousemovelabel.sele);
+         //if(lastlabel!=null)println("lastlabel="+lastlabel.name);
+         //if(mousemovelabel==lastlabel)println("the same");
+         //text(mousemovelabel.name,10,300);
        }
-   }*/
-   lastlabel=mousemovelabel;
-   lastcell=mousemovecell;
-   //redraw();
+     }
+     //lastcell=c;
+     if(lastcell==null){
+       //if(mousemovecell!=null)println("I choose a cell:"+mousemovecell.name+","+mousemovecell.cri);
+     }
+     else if(mousemovecell!=null){
+         if(mousemovecell.name!=lastcell.name ){
+           //println("I choose a cell:"+mousemovecell.name+","+mousemovecell.cri+mousemovecell.sele);
+           //if(lastcell!=null)println("lastcell:"+lastcell.name+","+lastcell.cri);
+           //text("I choose a cell:"+mousemovecell.name+","+mousemovecell.cri,mouseX,mouseY);
+         }
+     }*/
+     lastlabel=mousemovelabel;
+     lastcell=mousemovecell;
+     //redraw();
+   }
 }
 
 void mouseClicked(){
-  int i,j;
+  int i,j,ylabelnum,xlabelnum;
+  if(counnum>-nupdown+20)ylabelnum=-nupdown+20;
+  else ylabelnum=counnum;
    //ylabel;
-   for(i=-nupdown+1;i<counnum+1;i++){
+   for(i=-nupdown+1;i<ylabelnum;i++){
      if(ylabel[i].contains(mouseX,mouseY)==true){
        if(ylabel[i].sele==1){
          ylabel[i].setstate(2);
@@ -446,7 +451,9 @@ void mouseClicked(){
      }
    }
    //xlabel
-   for(i=-nleftright;i<crinum;i++){
+   if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+   else xlabelnum=crinum;
+   for(i=-nleftright;i<xlabelnum;i++){
      if(xlabel[i].contains(mouseX,mouseY)==true){
        if(xlabel[i].sele==1){
          xlabel[i].setstate(2);
@@ -481,13 +488,17 @@ void keyPressed(){
       if(nupdown<0)nupdown++;
     }
     if(keyCode==DOWN){
-      nupdown--;
+      if(-nupdown<counnum)nupdown--;
     }
     if(keyCode==LEFT){
       if(nleftright<0)nleftright++;
     }
     if(keyCode==RIGHT){
-      nleftright--;
+      if(-nleftright<crinum)nleftright--;
+    }
+    if(key=='q'){
+      nupdown=0;
+      nleftright=0;
     }
   }
 }
@@ -523,11 +534,11 @@ void lrmask(){
 void mymask(){
   fill(255);
   noStroke();
-  rect(0,450,500,50);
+  //rect(0,450,500,50);
   fill(126,192,238);
   text("Note: Press the key UP,DOWN,LEFT and RIGHT to change view",10,470);
   text("           Press key l to change into log ",10,485);
-  fill(255);
-  rect(450,0,70,500);
+  //fill(255);
+  //rect(450,0,70,500);
 }
 

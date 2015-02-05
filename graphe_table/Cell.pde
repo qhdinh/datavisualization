@@ -41,16 +41,26 @@ class Cell{
   public void setstate(int i){
     this.sele=i;
   }
+  
   public void draw(){
     noStroke();
     fill(150,50);
     rect(this.xspot,this.yspot,this.cwidth-1,this.cheight);
   }
+  
   public void showvalue(){
+    float s;
+    s=(float)(this.value);
+    String ss=str(s);
+    if(ss.equals("NaN")){
+      ss="no Value";
+    }
     noStroke();
     fill(255);
     rect(this.xspot,this.yspot,this.cwidth-1,this.cheight);
-    fill(120);
-    text((float)this.value,this.xspot,this.yspot+15);
+    if(this.value>=0)fill(80);
+    else fill(240,128,128);
+    textFont(labelFont1,12);
+    text(ss,this.xspot,this.yspot+15);
   }
 }
