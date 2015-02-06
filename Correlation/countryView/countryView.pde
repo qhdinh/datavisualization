@@ -1,5 +1,7 @@
 DataRead fulldata;
-boolean isLogPlot = false;
+boolean isLogPlotX = false;
+boolean isLogPlotY = false;
+
 String selectedName = "";
 
 float blendTimer = 0;  // smoothly blends between the data sets
@@ -13,7 +15,7 @@ float minY;
 ArrayList<DataPoint> dataplot;
 
 CategorySelector catSelector1, catSelector2;
-checkBox cBox;
+checkBox cBoxX, cBoxY;
 graphLabel continentLabel;
 void setup() {
     size(840, 640);
@@ -22,13 +24,17 @@ void setup() {
     catSelector1 = new CategorySelector(fulldata, width -200, 20, "X axis");
     catSelector2 = new CategorySelector(fulldata, width -200, 55, "Y axis");
     smooth();
-    cBox = new checkBox(width - 50, height - 50, false, "Log plot:");
+    cBoxX = new checkBox(width - 50, height - 50, false, "Log plot X:");
+    cBoxY = new checkBox(width - 50, height - 30, false, "Log plot Y:");
+    
     continentLabel = new graphLabel(width-100,height - 250);
 }
 
 void draw() {
   background(255);
-  isLogPlot = cBox.checked;
+  isLogPlotX = cBoxX.checked;
+  isLogPlotY = cBoxY.checked;
+  
   // draw the axes
   int bd = 15;   // border space
   stroke(0);
@@ -54,11 +60,10 @@ void draw() {
   for(DataPoint dp : dataplot){
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
-      if(isLogPlot){
+      if(isLogPlotX)
         x = log(dp.x - minX + 1)/log(maxX-minX +1);
+      if(isLogPlotY)
         y = 1-log(dp.y - minY + 1)/log(maxY-minY + 1);
-        
-      }
       if(dp.name.equals(selectedName)){
         textSize(12);
         fulldata.setContinentColor(dp.continentName);
@@ -78,7 +83,8 @@ void draw() {
   catSelector2.Draw();
   catSelector1.Draw();
     
-  cBox.draw();
+  cBoxX.draw();
+  cBoxY.draw();
   continentLabel.draw();
 }
 
@@ -93,11 +99,10 @@ void mouseMoved(){
    for(DataPoint dp : dataplot){
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
-      if(isLogPlot){
+      if(isLogPlotX)
         x = log(dp.x - minX+1)/log(maxX-minX+1);
+      if(isLogPlotY)
         y = 1-log(dp.y - minY+1)/log(maxY-minY+1);
-        
-      }
      x = x*(width-230) + 15;
      y = y*(height-35)+17;
      float dist = (float)Math.sqrt((x-mouseX)*(x-mouseX) + (y-mouseY)*(y-mouseY));
@@ -115,6 +120,7 @@ void mousePressed()
 {
   catSelector1.click(mouseX, mouseY);
   catSelector2.click(mouseX, mouseY);
-  cBox.click(mouseX, mouseY);
+  cBoxX.click(mouseX, mouseY);
+  cBoxY.click(mouseX, mouseY);
 }
 

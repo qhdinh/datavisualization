@@ -20,7 +20,7 @@ class checkBox{
           rect(x,y,15,15);
           fill(0);
       }
-      text(title, x -48 ,y + 12);
+      text(title, x -55 ,y + 12);
   }
   
   public void click(int x, int y){
