@@ -22,12 +22,7 @@ class Label{
     this.name=str;
     this.num=_num;
     if(axis==0){//y-axis
-      if(this.sele==0){
-        fill(126,192,238);
-      }
-      else if(this.sele==1){
-        fill(0);
-      }
+      fill(126,192,238);
       noStroke();
       smooth();
       this.xspot=10;
@@ -64,7 +59,7 @@ class Label{
       if(this.sele==0){
         fill(126,192,238);
       }
-      else if(this.sele==1){
+      else if(this.sele==1||this.sele==2){
         fill(180);
       }
       noStroke();
@@ -85,7 +80,7 @@ class Label{
       if(this.sele==0){
         fill(126,192,238);
       }
-      else if(this.sele==1){
+      else if(this.sele==1||this.sele==2){
         fill(180);
       }
       noStroke();

@@ -1,21 +1,13 @@
 class Country{
   String name;
-  double population;
-  double area;
-  double birthrate;
-  double deathrate;
-  double current_account_balance;
+  int councode;
   
   public Country(){
 
   }
-  public Country(String _name, double _pop, double _area, double birthr, double deathr, double cab){
+  public Country(String _name,int _code){
     name=_name;
-    population = _pop;
-    area = _area;
-    birthrate = birthr;
-    deathrate = deathr;
-    current_account_balance = cab;
+    councode=_code;
   }
  
 }
