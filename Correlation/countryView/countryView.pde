@@ -14,13 +14,16 @@ ArrayList<DataPoint> dataplot;
 
 CategorySelector catSelector1, catSelector2;
 checkBox cBox;
+graphLabel continentLabel;
 void setup() {
     size(840, 640);
+    textSize(11);
     fulldata = new DataRead("c:/factbook.csv");
     catSelector1 = new CategorySelector(fulldata, width -200, 20, "X axis");
     catSelector2 = new CategorySelector(fulldata, width -200, 55, "Y axis");
     smooth();
     cBox = new checkBox(width - 50, height - 50, false, "Log plot:");
+    continentLabel = new graphLabel(width-100,height - 250);
 }
 
 void draw() {
@@ -47,22 +50,26 @@ void draw() {
   maxY = fulldata.getMaxY(dataplot);
   minY = fulldata.getMinY(dataplot);
   
-  
   fill(220,130,150,150);
   for(DataPoint dp : dataplot){
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
       if(isLogPlot){
-          x = log(dp.x - minX)/log(maxX-minX);
-          y = 1-log(dp.y - minY)/log(maxY-minY);
+        x = log(dp.x - minX + 1)/log(maxX-minX +1);
+        y = 1-log(dp.y - minY + 1)/log(maxY-minY + 1);
+        
       }
       if(dp.name.equals(selectedName)){
-        ellipse( x*(width-230) + 15, y*(height-35)+17, 10, 10 );
+        textSize(12);
+        fulldata.setContinentColor(dp.continentName);
+        ellipse( x*(width-230) + 15, y*(height-35)+17, 13, 13 );
         fill(0);
         text(dp.name, x*(width-230) + 15, y*(height-35)-3);
         fill(220,130,150,150);
+        textSize(11);
       }else{
-        ellipse( x*(width-230) + 15, y*(height-35)+17, 5, 5 );
+        fulldata.setContinentColor(dp.continentName);
+        ellipse( x*(width-230) + 15, y*(height-35)+17, 7, 7 );
       }
   }
   //trace 0 lines
@@ -72,6 +79,7 @@ void draw() {
   catSelector1.Draw();
     
   cBox.draw();
+  continentLabel.draw();
 }
 
 void mouseMoved(){
@@ -86,8 +94,9 @@ void mouseMoved(){
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
       if(isLogPlot){
-        x = log(dp.x - minX)/log(maxX-minX);
-        y = y = 1-log(dp.y - minY)/log(maxY-minY);
+        x = log(dp.x - minX+1)/log(maxX-minX+1);
+        y = 1-log(dp.y - minY+1)/log(maxY-minY+1);
+        
       }
      x = x*(width-230) + 15;
      y = y*(height-35)+17;

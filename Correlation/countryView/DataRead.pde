@@ -8,6 +8,8 @@ class DataRead{
   public List<String> columns;
   public List<String> columnTypes;
   public ArrayList<List<String>> data = new ArrayList<List<String>>();
+
+  public int columnMax;  
   
   public ArrayList<DataPoint> getData(int codeX, int codeY){
      ArrayList<DataPoint> dlist = new ArrayList<DataPoint>();
@@ -17,7 +19,8 @@ class DataRead{
          if(!data.get(i).get(codeX).equals("") && !data.get(i).get(codeY).equals(""))
              dlist.add(new DataPoint(data.get(i).get(0), 
                                      Float.parseFloat(data.get(i).get(codeX)), 
-                                     Float.parseFloat(data.get(i).get(codeY))));
+                                     Float.parseFloat(data.get(i).get(codeY)),
+                                     data.get(i).get(columnTypes.size())));
          }catch(Exception e){
              continue;
          }
@@ -26,7 +29,7 @@ class DataRead{
   }
   
   public int getNCategories(){
-    return columnTypes.size() -1;
+    return columnTypes.size();
   }
   
   public float getMaxX(ArrayList<DataPoint> data){
@@ -91,15 +94,33 @@ class DataRead{
  
     } catch (IOException e) {
       e.printStackTrace();
-    } finally {
- 
-      try {
-        if (br != null)br.close();
-      } catch (IOException ex) {
-        ex.printStackTrace();
+    } finally{
+      try{
+        br.close();
+      }catch (IOException e) {
+      e.printStackTrace();
       }
- 
-    } 
+    }
+    columnMax = columnTypes.size() -2;
   }
+  
+  public void setContinentColor(String name){
+      if(name.equals("Asia")){
+          fill(255,0,0,200);
+      }else if(name.equals("Africa")){
+          fill(255,255,0,200);
+      }else if(name.equals("Europe")){
+          fill(0,0,255,200);
+      }else if(name.equals("South America")){
+          fill(0,255,0,200);
+      }else if(name.equals("North America")){
+          fill(255,0,255,200);
+      }else if(name.equals("Oceania")){
+          fill(100,100,100,200);
+      }else if(name.equals("Middle East")){
+          fill(0,255,255,200);
+      }
+  }
+  
 
 }
