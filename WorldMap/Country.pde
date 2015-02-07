@@ -1,5 +1,7 @@
-public class Country
+public class Country extends GUIControl
 {
+    public Map map;
+    
     public String name;
     
     //Each country may have many separated parts called Regions
@@ -16,19 +18,7 @@ public class Country
         name = "";
         regions = new ArrayList(); 
         countryColor = seaColor;
-    }
-    
-    public Country(String name, List<Region> regions)
-    {
-        this();
-        this.name = name;
-        for(Region Region : regions)
-            this.regions.add(new Region(Region));
-    }
-    
-    public Country(Country originalCountry)
-    {
-        this(originalCountry.name, originalCountry.regions);
+        state = STATE_NORMAL;
     }
     
     public void addField(String field, double fieldData)
@@ -51,14 +41,6 @@ public class Country
                 region.usesData(data, (Double)countryInfo.get(field));
     }
     
-    public void fillSurface(int ratio)
-    {
-        for(Region Region : regions)
-        {
-            Region.fillSurface(ratio);
-        }
-    }
-    
     public void fillColor(color newColor)
     {
         countryColor = newColor;
@@ -75,23 +57,65 @@ public class Country
         }
     }
     
+    public void drawInformation()
+    {
+        fill(color(0, 255, 255, 255));
+        rect(mouseX - 100, mouseY - 100, 100, 100);
+    }
+    
+    void mouseMoved()
+    {
+        state = STATE_NORMAL;
+        for(Region region: regions)
+            if(region.normalizedBorder.contains(mouseX, mouseY))
+            {
+                state = STATE_HOVER;
+                break;
+            }
+    }
+    
+    void mouseClicked()
+    {
+        state = STATE_NORMAL;
+        for(Region region: regions)
+            if(region.normalizedBorder.contains(mouseX, mouseY))
+            {
+                state = STATE_CLICKED;
+                break;
+            }
+    }
+    
     //Check if the two countries are very closed to each other (relatively)
     public boolean adjacent(Country country)
     {
         for(Region region1 : this.regions)
-        for(Region region2 : country.regions)
-        if(region1.adjacent(region2))
-            return true;
+          for(Region region2 : country.regions)
+            if(region1.adjacent(region2))
+                return true;
         return false;
     }
     
-    public void writeToFile(BufferedWriter bufferWriter)
+    public void writeSurfaceToFile(BufferedWriter bufferWriter)
     {
         try {
             bufferWriter.write(Integer.toString(regions.size()) + "\r\n");
             for(Region region : regions)
             {
-                region.writeToFile(bufferWriter);
+                region.writeSurfaceToFile(bufferWriter);
+            }
+        }
+        catch (IOException e)
+        {
+        }
+    }
+    
+    public void writeScreenBordersToFile(BufferedWriter bufferWriter)
+    {
+        try {
+            bufferWriter.write(Integer.toString(regions.size()) + "\r\n");
+            for(Region region : regions)
+            {
+                region.writeScreenBordersToFile(bufferWriter);
             }
         }
         catch (IOException e)

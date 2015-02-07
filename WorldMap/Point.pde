@@ -22,10 +22,10 @@ public class Point
         this(originalPoint.x, originalPoint.y, originalPoint.pointColor);
     }
     
-    public Point Normalize(int ratio)
+    public Point Normalize(float minX, float minY, float maxX, float maxY)
     {
-        float newX = map(this.x, minX, maxX, 0, width);
-        float newY = map(this.y, minY, maxY, height, 0);
+        float newX = map(this.x, minX, maxX, map.left, map.right);
+        float newY = map(this.y, minY, maxY, map.bottom, map.top);
         return new Point(newX, newY, pointColor);
     }
     

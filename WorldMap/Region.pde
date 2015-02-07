@@ -1,5 +1,7 @@
 public class Region
 {
+    public Country country;
+    
     //The original border in the original dataset
     public List<Point> originalBorder;
     
@@ -17,23 +19,46 @@ public class Region
         originalBorder = new ArrayList();
         surface = new ArrayList();
     }
+    
+    public void setOriginalBorder(List<Point> points)
+    {
+        originalBorder.clear();
+        for(Point point: points)
+            originalBorder.add(point);
+    }
+    
+    public void setNormalizedBorderFromPoints(List<Point> points)
+    {
+        int[] x = new int [points.size()];
+        for (int i = 0; i < points.size(); ++i)    x[i] = (int)points.get(i).x;
+        
+        int[] y = new int [points.size()];
+        for (int i = 0; i < points.size(); ++i)    y[i] = (int)points.get(i).y;
+        
 
-    public Region(List<Point> border)
-    {
-        this();
-        for(Point point : border)
-            this.originalBorder.add(new Point(point));
-    }
-    
-    public Region(Region originalCountry)
-    {
-        this(originalCountry.originalBorder);
-    }
-    
-    //Update the bound (for the first creation of the map of when zooming)
-    public void updateBound()
-    {
+        normalizedBorder = new Polygon(x, y, points.size());
         normalizedBound = normalizedBorder.getBounds();
+    }
+    
+    public void setNormalizedBorderFromRawBorder(float minX, float minY, float maxX, float maxY)
+    {
+        for(int i = 0; i < screenWidth; ++i)
+            Arrays.fill(screenMark[i], false);
+         
+        List<Point> points = new ArrayList(); 
+        for(Point point : originalBorder)
+        {
+            Point newPoint = point.Normalize(minX, minY, maxX, maxY);
+            //System.out.println(newPoint.x + " " + newPoint.y + "\r\n");
+            if ((newPoint.x >= 0) && (newPoint.x < screenWidth) &&
+                (newPoint.y >= 0) && (newPoint.y < screenHeight)&&
+                (screenMark[(int)newPoint.x][(int)newPoint.y] == false))
+            {
+                screenMark[(int)newPoint.x][(int)newPoint.y] = true;
+                points.add(newPoint);
+            }
+        }
+        setNormalizedBorderFromPoints(points);
     }
     
     public void setIndex(int[][] countryIndex, int index)
@@ -48,63 +73,75 @@ public class Region
             point.usesData(data, info);
     }
     
-    public void fillSurface(int ratio)
+    public void fillSurfaceFromPoints(List<Point> surface)
     {
-        List<Integer> normalizedBorderx = new ArrayList<Integer>();
-        List<Integer> normalizedBordery = new ArrayList<Integer>();
-        
-        int minx = Integer.MAX_VALUE;
-        int miny = Integer.MAX_VALUE;
-        int maxx = Integer.MIN_VALUE;
-        int maxy = Integer.MIN_VALUE;
-     
-        for(int i = 0; i < screenWidth; ++i)    Arrays.fill(screenMark[i], false);    
-        
-        for(Point point : originalBorder)
-        {
-            Point newPoint = point.Normalize(ratio);
-            if ((newPoint.x >= 0) && (newPoint.x < screenWidth) &&
-                (newPoint.y >= 0) && (newPoint.y < screenHeight)&&
-                (screenMark[(int)newPoint.x][(int)newPoint.y] == false))
-            {
-                screenMark[(int)newPoint.x][(int)newPoint.y] = true;
-                normalizedBorderx.add((int)newPoint.x);
-                normalizedBordery.add((int)newPoint.y);
-                if(minx > (int)newPoint.x)  minx = (int)newPoint.x;
-                if(miny > (int)newPoint.y)  miny = (int)newPoint.y;
-                if(maxx < (int)newPoint.x)  maxx = (int)newPoint.x;
-                if(maxy < (int)newPoint.y)  maxy = (int)newPoint.y;
-            }
-        }
-               
-        int[] x = new int [normalizedBorderx.size()];
-        for (int i = 0; i < normalizedBorderx.size(); ++i)    x[i] = normalizedBorderx.get(i);
-        
-        int[] y = new int [normalizedBordery.size()];
-        for (int i = 0; i < normalizedBordery.size(); ++i)    y[i] = normalizedBordery.get(i);
-        
-        normalizedBorder = new Polygon(x, y, normalizedBorderx.size());
-        updateBound();
-        
-        for(int tx = minx; tx <= maxx; ++tx)
-            for(int ty = miny; ty <= maxy; ++ty)
-              if(normalizedBorder.contains(tx, ty))
-                  surface.add(new Point(tx, ty, color(0, 0, 255, 255)));
+        this.surface.clear();
+        for(Point point : surface)
+            this.surface.add(point);
     }
     
-    //Draw all point inside the borders and draw lines connecting 2 consecutive points of the borders
+    public void fillSurfaceFromNormalizedBorder()
+    {        
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int maxY = Integer.MIN_VALUE;
+          
+        for(int i = 0; i < normalizedBorder.npoints; ++i)
+        {
+            if(minX > normalizedBorder.xpoints[i])  minX = normalizedBorder.xpoints[i];
+            if(minY > normalizedBorder.ypoints[i])  minY = normalizedBorder.ypoints[i];
+            if(maxX < normalizedBorder.xpoints[i])  maxX = normalizedBorder.xpoints[i];
+            if(maxY < normalizedBorder.ypoints[i])  maxY = normalizedBorder.ypoints[i];
+        }
+               
+        for(int tx = minX; tx <= maxX; ++tx)
+            for(int ty = minY; ty <= maxY; ++ty)
+              if(normalizedBorder.contains(tx, ty))
+                  surface.add(new Point(tx, ty, seaColor));
+    }
+    
     public void draw()
     {
         if(surface.size() == 0)
             return;
-        stroke(surface.get(0).pointColor);
-        for(int i = 1; i < normalizedBorder.npoints; ++i)
-              line(normalizedBorder.xpoints[i - 1], normalizedBorder.ypoints[i - 1], normalizedBorder.xpoints[i], normalizedBorder.ypoints[i]);
-        if(normalizedBorder.npoints > 1)
-              line(normalizedBorder.xpoints[normalizedBorder.npoints - 1], normalizedBorder.ypoints[normalizedBorder.npoints - 1],
-                   normalizedBorder.xpoints[0], normalizedBorder.ypoints[0]);
+            
+        int state = this.country.state;
+        
+        color usedBorderColor = color(255, 255, 255, 255);
+        color usedSurfaceColor = country.countryColor;
+        switch (state) {
+            case GUIControl.STATE_NORMAL:
+                usedBorderColor = color(255, 255, 255, 255);
+                break;
+            case GUIControl.STATE_HOVER:
+                usedBorderColor = color(255, 255, 0, 255);
+                usedSurfaceColor = color(min(red(usedSurfaceColor) + 50, 255),
+                                         min(green(usedSurfaceColor) + 50, 255),
+                                         min(blue(usedSurfaceColor) + 50, 255),
+                                         255);
+                break;
+            case GUIControl.STATE_CLICKED:
+                usedBorderColor = color(255, 255, 0, 255);
+                usedSurfaceColor = color(min(red(usedSurfaceColor) + 50, 255),
+                                         min(green(usedSurfaceColor) + 50, 255),
+                                         min(blue(usedSurfaceColor) + 50, 255),
+                                         255);
+                break;
+        }
+        
+        stroke(usedBorderColor);
+        for(int i = 0; i < normalizedBorder.npoints; ++i)
+        {
+            Point point = new Point((float)normalizedBorder.xpoints[i], (float)normalizedBorder.ypoints[i], color(255, 255, 255, 255));
+            set((int)point.x, (int)point.y, usedBorderColor);
+            //point.draw();
+        }
+        
+        stroke(usedSurfaceColor);
         for(Point point : surface)
-            point.draw();
+            set((int)point.x, (int)point.y, usedSurfaceColor);
+            //point.draw();
     }
     
     int getDistance(int x1, int y1, int x2, int y2)
@@ -117,7 +154,7 @@ public class Region
         return this.normalizedBound.intersects(region.normalizedBound);
     }
     
-    public void writeToFile(BufferedWriter bufferWriter)
+    public void writeSurfaceToFile(BufferedWriter bufferWriter)
     {
         try {
             bufferWriter.write(Integer.toString(surface.size()) + "\r\n");
@@ -129,6 +166,28 @@ public class Region
         }
         catch (IOException e)
         {
+        }
+    }
+    
+    public void writeScreenBordersToFile(BufferedWriter bufferWriter)
+    {
+        try {
+            bufferWriter.write(Integer.toString(normalizedBorder.npoints) + "\r\n");
+            //System.out.println("screen " + normalizedBorder.npoints);
+            for(int i = 0; i < normalizedBorder.npoints; ++i)
+            {
+                bufferWriter.write((int)normalizedBorder.xpoints[i] + " " + (int)normalizedBorder.ypoints[i] + " ");
+                //System.out.print(normalizedBorder.xpoints[i] + " " + normalizedBorder.ypoints[i] + " ");
+            }
+            //System.out.println("\n");
+            bufferWriter.write("\r\n");
+        }
+        catch (IOException e)
+        {
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
         }
     }
 }

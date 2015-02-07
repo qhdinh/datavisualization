@@ -1,70 +1,88 @@
 //This file is used for reading the data.
+/*
+File countriesScreenBordersFile = new File(mainFolder + "\\screen borders.txt");
+FileWriter countriesScreenBordersFileWriter = new FileWriter(countriesScreenBordersFile.getAbsoluteFile());
+BufferedWriter countriesScreenBordersBufferedWriter = new BufferedWriter(countriesScreenBordersFileWriter);          
+map.writeScreenBordersToFile(countriesScreenBordersBufferedWriter);
+countriesScreenBordersFileWriter.close();
 
-void getMapData() {
+File countriesSurfacesFile = new File(mainFolder + "\\surfaces.txt");
+FileWriter countriesSurfacesFileWriter = new FileWriter(countriesSurfacesFile.getAbsoluteFile());
+BufferedWriter countriesSurfacesBufferedWriter = new BufferedWriter(countriesSurfacesFileWriter);
+map.writeSurfaceToFile(countriesSurfacesBufferedWriter);
+countriesSurfacesBufferedWriter.close();
+*/
 
-    minX = minY = Integer.MAX_VALUE;
-    maxX = maxY = Integer.MIN_VALUE;
-    
+void getMapDataFromScreenBorder() {
     try {
+          map = new Map();
+
           Charset charset = Charset.forName("UTF-8");
     
-          File countriesBordersFile = new File(mainFolder + "\\original borders.txt");
+          File countriesBordersFile = new File(mainFolder + "\\screen borders.txt");
           FileReader countriesBordersFileReader = new FileReader(countriesBordersFile.getAbsoluteFile());
           BufferedReader countriesBordersBufferedReader = new BufferedReader(countriesBordersFileReader);
           
-          File countriesNamesFile = new File(mainFolder + "\\country names.txt");
+          File countriesSurfacesFile = new File(mainFolder + "\\surfaces.txt");
+          FileReader countriesSurfacesFileReader = new FileReader(countriesSurfacesFile.getAbsoluteFile());
+          BufferedReader countriesSurfacesBufferedReader = new BufferedReader(countriesSurfacesFileReader);
+          
+          File countriesNamesFile = new File(mainFolder + "\\names.txt");
           FileReader countriesNamesFileReader = new FileReader(countriesNamesFile.getAbsoluteFile());
           BufferedReader countriesNamesBufferedReader = new BufferedReader(countriesNamesFileReader);
           
           String line = "";
-          List<Country> countries = new ArrayList<Country>();
           while ((line = countriesNamesBufferedReader.readLine()) != null) {
               
-              String name = line;
-              System.out.println(name);
+              String name = line;              
+              Country newCountry = new Country();
               
-              String bufferString = countriesBordersBufferedReader.readLine();
+              String bufferString;
+              bufferString = countriesBordersBufferedReader.readLine();
+              bufferString = countriesSurfacesBufferedReader.readLine();
               int numOfPolygons = Integer.parseInt(bufferString);
-              List<Region> regions = new ArrayList<Region>();
               
               for(int i = 0; i < numOfPolygons; ++i)
               {
+                  //Get the border
                   bufferString = countriesBordersBufferedReader.readLine();
-                  int numOfPoints = Integer.parseInt(bufferString);
-                  
+                  int numOfBorderPoints = Integer.parseInt(bufferString);
                   bufferString = countriesBordersBufferedReader.readLine();
                   String[] stringCoordinates = bufferString.split(" ");
-                  
                   List<Point> points = new ArrayList<Point>();
+                  for(int j = 0; j < numOfBorderPoints; ++j)
+                  {
+                      float curX = Float.parseFloat(stringCoordinates[2 * j]);
+                      float curY = Float.parseFloat(stringCoordinates[2 * j + 1]);
+                      points.add(new Point(curX, curY, seaColor));
+                  }
+                  Region newRegion = new Region();
+                  newRegion.setOriginalBorder(points);
+                  newRegion.setNormalizedBorderFromPoints(points);
                   
-                  for(int j = 0; j < numOfPoints; ++j)
+                  //Get the surface
+                  bufferString = countriesSurfacesBufferedReader.readLine();
+                  int numOfSurfacePoints = Integer.parseInt(bufferString);
+                  bufferString = countriesSurfacesBufferedReader.readLine();
+                  stringCoordinates = bufferString.split(" ");
+                  points = new ArrayList<Point>();
+                  for(int j = 0; j < numOfSurfacePoints; ++j)
                   {
                       float curX = Float.parseFloat(stringCoordinates[2 * j]);
                       float curY = Float.parseFloat(stringCoordinates[2 * j + 1]);
                       points.add(new Point(curX, curY, color(0, 0, 255, 255)));
-                      
-                      if(minX > (int)curX)  minX = (int)curX;
-                      if(minY > (int)curY)  minY = (int)curY;
-                      if(maxX < (int)curX)  maxX = (int)curX;
-                      if(maxY < (int)curY)  maxY = (int)curY;
                   }
-                  regions.add(new Region(points));
+                  newRegion.fillSurfaceFromPoints(points);
+                  newCountry.regions.add(newRegion);
               }
-              countries.add(new Country(name, regions));
+              map.countries.add(newCountry);
           }
-          map = new Map(countries, ratio);
-          map.fillSurface(100);
-          map.assignColors();
-          map.indexCountries();
           countriesNamesBufferedReader.close();
           countriesBordersBufferedReader.close();
+          countriesSurfacesBufferedReader.close();
           
-    
-          File countriesSurfacesFile = new File(mainFolder + "\\screen borders.txt");
-          FileWriter countriesSurfacesFileWriter = new FileWriter(countriesSurfacesFile.getAbsoluteFile());
-          BufferedWriter countriesSurfacesBufferedWriter = new BufferedWriter(countriesSurfacesFileWriter);
-          map.writeToFile(countriesSurfacesBufferedWriter);
-          countriesSurfacesBufferedWriter.close();
+          map.assignColorsToTheCountries();
+          map.indexCountries();
     }
     catch (IOException e)
     {
@@ -79,20 +97,21 @@ void getCountryInfo()
         BufferedReader countryInfoBufferedReader = new BufferedReader(countryInfoFileReader);
         
         String stringBuffer = countryInfoBufferedReader.readLine();
-        String[] fields = stringBuffer.split(";");
+        countryFields = stringBuffer.split(";");
         stringBuffer = countryInfoBufferedReader.readLine();
-        int numOfFields = fields.length;
+        int numOfFields = countryFields.length;
         while((stringBuffer = countryInfoBufferedReader.readLine()) != null) {
               
             String[] fieldData = stringBuffer.split(";", numOfFields);
             Country readCountry = map.getCountryWithName(fieldData[0]);
-            System.out.println(fieldData.length);
+            System.out.println(fieldData[0]);
             if(readCountry != null)
             {
+                System.out.println(readCountry.name);
                 for(int i = 1; i < numOfFields; ++i)
                 if(!fieldData[i].isEmpty())
                 {
-                    readCountry.addField(fields[i], Double.parseDouble(fieldData[i]));
+                    readCountry.addField(countryFields[i], Double.parseDouble(fieldData[i]));
                 }
             } 
         }
@@ -103,38 +122,39 @@ void getCountryInfo()
     }
 }
 
-//Set the used data to draw cartogram or any other purpose
-void getUsedData(String field)
+void WriteToFile()
 {
-    map.usesData(field);
-    
-    try{
-        File countriesInfoMatrixFile = new File(mainFolder + "\\used data for cartogram.txt");
-        FileWriter countriesInfoMatrixFileWriter = new FileWriter(countriesInfoMatrixFile.getAbsoluteFile());
-        BufferedWriter countriesInfoMatrixBufferWriter = new BufferedWriter(countriesInfoMatrixFileWriter);
-             
-        for(int i = 0; i < screenHeight; ++i)
-        {
-            for(int j = 0; j < screenWidth; ++j)
-                countriesInfoMatrixBufferWriter.write(((Double)map.countryInfo[i][j]).toString() + " ");
-            countriesInfoMatrixBufferWriter.write("\r\n");
-        }
-        countriesInfoMatrixBufferWriter.close();
-
-
-        File countriesIndicesMatrixFile = new File(mainFolder + "\\country indices.txt");
-        FileWriter countriesIndicesMatrixFileWriter = new FileWriter(countriesIndicesMatrixFile.getAbsoluteFile());
-        BufferedWriter countriesIndicesMatrixBufferWriter = new BufferedWriter(countriesIndicesMatrixFileWriter);
-        
-        for(int i = 0; i < screenHeight; ++i)
-        {
-            for(int j = 0; j < screenWidth; ++j)
-                countriesIndicesMatrixBufferWriter.write(((Integer)map.countryIndices[i][j]).toString() + " ");
-            countriesIndicesMatrixBufferWriter.write("\r\n");
-        }
-        countriesIndicesMatrixBufferWriter.close();
-    }
-    catch (IOException e)
+    /*
+    for(Country country: map.countries)
     {
+        System.out.println(country.name);
     }
+    
+    for(int i = 1; i < countryFields.length; ++i)
+    {
+        try {
+            File infoFile = new File("D:\\data_" + countryFields[i] + ".txt");
+            FileWriter infoFileWriter = new FileWriter(infoFile.getAbsoluteFile());
+            BufferedWriter infoFileBufferWriter = new BufferedWriter(infoFileWriter);
+            infoFileBufferWriter.write(countryFields[i] + "\r\n");
+            for(Country country: map.countries)
+            {
+                NumberFormat nf = NumberFormat.getInstance();
+                nf.setMinimumFractionDigits(7);
+                ((DecimalFormat) nf).setDecimalSeparatorAlwaysShown(false);
+                if(country.countryInfo.get(countryFields[i]) != null)
+                {
+                      Double x = (Double)country.countryInfo.get(countryFields[i]);
+                      infoFileBufferWriter.write(nf.format(x) + "\r\n");
+                }
+                else
+                      infoFileBufferWriter.write(0 + "\r\n");
+            }
+            infoFileBufferWriter.close();
+        }
+        catch (IOException e)
+        {
+        }
+    }
+    */
 }

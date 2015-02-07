@@ -1,7 +1,8 @@
 //Contain all information of the map (countries, points, ...)
 //Each function of this class may call to the functions with the SAME NAME and PURPOSE of its members
-public class Map
-{
+public class Map extends GUIControl
+{    
+  
     public List<Country> countries;
     
     //To zoom the map (if possible)
@@ -20,41 +21,31 @@ public class Map
     
     public Map()
     {
+        left = 20;
+        top = 100;
+        right = 1346;
+        bottom = 748;
         countries = new ArrayList();
         this.ratio = ratio;
         countryIndices = new int[screenHeight][screenWidth];
         countryInfo = new double[screenHeight][screenWidth];
     }
     
-    public Map(List<Country> countries, int ratio)
-    {
-        this();
-        for(Country country : countries)
-            this.countries.add(new Country(country));
-        this.ratio = ratio;
-    }
-    
-    public Map(Map originalMap)
-    {
-        this(originalMap.countries, originalMap.ratio);
-    }
-        
     public void draw()
     {
+        strokeWeight(3);
+        fill(seaColor);
+        stroke(color(0, 0, 0, 255));
+        rect(left - 3, top - 3, width() + 2 * 3, height() + 2 * 3);
         strokeWeight(1);
         for(Country country : countries)
         {
             country.draw();
         }
-    }
-    
-    //From the border, find all points inside them and fill in the surface
-    public void fillSurface(int ratio)
-    {
+        
         for(Country country : countries)
-        {
-            country.fillSurface(ratio);
-        }
+            if(country.state == STATE_CLICKED)
+                country.drawInformation();
     }
     
     //Fill in the array countryIndices
@@ -65,6 +56,24 @@ public class Map
         for(int i = 0; i < countries.size(); ++i)
         {
             countries.get(i).setIndex(countryIndices, i);
+        }
+    }
+    
+    public void normalizeRegionsFromRawBorder(float minX, float minY, float maxX, float maxY)
+    {
+        for(Country country: countries)
+        {
+            for(Region region: country.regions)
+                region.setNormalizedBorderFromRawBorder(minX, minY, maxX, maxY);
+        }
+    }
+    
+    public void fillSurfaceFromNormalizedBorder()
+    {
+        for(Country country: countries)
+        {
+            for(Region region: country.regions)
+                region.fillSurfaceFromNormalizedBorder();
         }
     }
     
@@ -85,8 +94,8 @@ public class Map
         return null;
     }
     
-    //Fill color for the all the country
-    public void assignColors()
+    //Fill color for all the country
+    public void assignColorsToTheCountries()
     {
         //Get the adjacent matrix
         int n = countries.size();
@@ -101,6 +110,7 @@ public class Map
                 adjacent[i][j] = adjacent[j][i] = false;
                 
         int numOfColors = countryColors.length;
+        int iterations = 0;
         while(true)
         {
             //Get an uncolored country
@@ -140,6 +150,102 @@ public class Map
         }
     }
     
+    void mouseMoved()
+    {
+        for(Country country: countries)
+        {
+            country.mouseMoved();
+        }
+    }
+    
+    void mouseClicked()
+    {
+        for(Country country: countries)
+        {
+            country.mouseClicked();
+        }
+    }
+    
+    public void getBorderFromFile(String filename, boolean isEmptyMap)
+    {
+        float minX = 0;
+        float maxX = 0;
+        float minY = 0;
+        float maxY = 0;  
+      
+        try {              
+              Charset charset = Charset.forName("UTF-8");
+        
+              File countriesBordersFile = new File(filename);
+              FileReader countriesBordersFileReader = new FileReader(countriesBordersFile.getAbsoluteFile());
+              BufferedReader countriesBordersBufferedReader = new BufferedReader(countriesBordersFileReader);
+              
+              File countriesNamesFile = new File(mainFolder + "\\names.txt");
+              FileReader countriesNamesFileReader = new FileReader(countriesNamesFile.getAbsoluteFile());
+              BufferedReader countriesNamesBufferedReader = new BufferedReader(countriesNamesFileReader);
+              
+              String line = "";
+              while ((line = countriesNamesBufferedReader.readLine()) != null) {
+                  
+                  String name = line;
+                  Country newCountry = null;
+                  if(isEmptyMap)
+                  {
+                      newCountry = new Country();
+                      newCountry.name = name;
+                  }
+                  else
+                      newCountry = getCountryWithName(name);
+                      
+                  newCountry.regions.clear();
+                  String bufferString = countriesBordersBufferedReader.readLine();
+                  int numOfPolygons = Integer.parseInt(bufferString);
+                  
+                  for(int i = 0; i < numOfPolygons; ++i)
+                  {
+                      bufferString = countriesBordersBufferedReader.readLine();
+                      int numOfPoints = Integer.parseInt(bufferString);
+                      
+                      bufferString = countriesBordersBufferedReader.readLine();
+                      String[] stringCoordinates = bufferString.split(" ");
+                      
+                      List<Point> points = new ArrayList<Point>();
+                      
+                      for(int j = 0; j < numOfPoints; ++j)
+                      {
+                          float curX = Float.parseFloat(stringCoordinates[2 * j]);
+                          float curY = Float.parseFloat(stringCoordinates[2 * j + 1]);
+                          points.add(new Point(curX, curY, seaColor));
+                          
+                          if(minX > (int)curX)  minX = (int)curX;
+                          if(minY > (int)curY)  minY = (int)curY;
+                          if(maxX < (int)curX)  maxX = (int)curX;
+                          if(maxY < (int)curY)  maxY = (int)curY;
+                      }
+                          
+                      Region newRegion = new Region();
+                      newRegion.setOriginalBorder(points);
+                      newRegion.country = newCountry;
+                      newCountry.regions.add(newRegion);
+                  }
+                  newCountry.map = map;
+                  
+                  if(isEmptyMap)
+                      map.countries.add(newCountry);
+              }
+              countriesNamesBufferedReader.close();
+              countriesBordersBufferedReader.close();
+                     
+              map.normalizeRegionsFromRawBorder(minX, minY, maxX, maxY);
+              map.fillSurfaceFromNormalizedBorder();
+              map.assignColorsToTheCountries();
+              map.indexCountries();
+        }
+        catch (IOException e)
+        {
+        }
+    }
+    
     //Get total number of points inside the countries (to debug)
     public int getNumberOfPoints()
     {
@@ -151,12 +257,32 @@ public class Map
         return numberOfPoints;
     }
     
-    //Write all the normalized borders to file (for the future use)
-    public void writeToFile(BufferedWriter bufferWriter)
+    public void writeSurfaceToFile(BufferedWriter bufferWriter)
     {
         for(Country country : countries)
         {
-            country.writeToFile(bufferWriter);
+            country.writeSurfaceToFile(bufferWriter);
+        }
+    }
+    
+    public void writeScreenBordersToFile(BufferedWriter bufferWriter)
+    {
+        try{
+            for(Country country : countries)
+            {
+                bufferWriter.write(country.regions.size() + "\r\n");                
+                for(Region region : country.regions)
+                {
+                    bufferWriter.write(Integer.toString(region.normalizedBorder.npoints) + "\r\n");                    
+                    for(int i = 0; i < region.normalizedBorder.npoints; ++i)
+                    {
+                        bufferWriter.write((int)region.normalizedBorder.xpoints[i] + " " + (int)region.normalizedBorder.ypoints[i] + " ");
+                    }
+                    bufferWriter.write("\r\n");                }
+            }
+        }
+        catch (IOException e)
+        {
         }
     }
 }
