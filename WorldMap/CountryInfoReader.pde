@@ -100,11 +100,14 @@ void getCountryInfo()
         countryFields = stringBuffer.split(";");
         stringBuffer = countryInfoBufferedReader.readLine();
         int numOfFields = countryFields.length;
+        
+        System.out.println(countryFields.length);
+        
         while((stringBuffer = countryInfoBufferedReader.readLine()) != null) {
               
             String[] fieldData = stringBuffer.split(";", numOfFields);
             Country readCountry = map.getCountryWithName(fieldData[0]);
-            System.out.println(fieldData[0]);
+            //System.out.println(fieldData[0]);
             if(readCountry != null)
             {
                 System.out.println(readCountry.name);
@@ -124,11 +127,13 @@ void getCountryInfo()
 
 void WriteToFile()
 {
-    /*
-    for(Country country: map.countries)
+    
+    /*for(Country country: map.countries)
     {
         System.out.println(country.name);
-    }
+    }*/
+    
+    System.out.println(countryFields.length);
     
     for(int i = 1; i < countryFields.length; ++i)
     {
@@ -136,6 +141,7 @@ void WriteToFile()
             File infoFile = new File("D:\\data_" + countryFields[i] + ".txt");
             FileWriter infoFileWriter = new FileWriter(infoFile.getAbsoluteFile());
             BufferedWriter infoFileBufferWriter = new BufferedWriter(infoFileWriter);
+            System.out.println(countryFields[i]);
             infoFileBufferWriter.write(countryFields[i] + "\r\n");
             for(Country country: map.countries)
             {
@@ -154,7 +160,8 @@ void WriteToFile()
         }
         catch (IOException e)
         {
+            System.out.println("Error");
         }
     }
-    */
+    
 }
