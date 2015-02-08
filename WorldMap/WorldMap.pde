@@ -71,6 +71,10 @@ List<Button> buttons;
 
 int textHeight = 16;
 
+java.util.Map CartogramName = new HashMap();
+
+boolean clicked = false;
+
 //Turn on full-screen mode
 boolean sketchFullScreen() {
     return true;
@@ -82,9 +86,55 @@ void setup() {
 
     size(screenWidth, screenHeight);
     initialize();
+    
+    CartogramName.put("Area", "Area");
+    CartogramName.put("Birth rate(births/1000 population)", "");
+    CartogramName.put("Current account balance", "");
+    CartogramName.put("Death rate(deaths/1000 population)", "");
+    CartogramName.put("Debt - external", "Debt");
+    CartogramName.put("Electricity - consumption(kWh)", "");
+    CartogramName.put("Electricity - production(kWh)", "");
+    CartogramName.put("Exports", "");
+    CartogramName.put("GDP", "");
+    CartogramName.put("GDP - per capita", "");
+    CartogramName.put("GDP - real growth rate(%)", "");
+    CartogramName.put("HIV/AIDS - adult prevalence rate(%)", "");
+    CartogramName.put("HIV/AIDS - deaths", "");
+    CartogramName.put("HIV/AIDS - people living with HIV/AIDS", "");
+    CartogramName.put("Highways(km)", "");
+    CartogramName.put("Imports", "");
+    CartogramName.put("Industrial production growth rate(%)", "");
+    CartogramName.put("Infant mortality rate(deaths/1000 live births)", "");
+    CartogramName.put("Inflation rate (consumer prices)(%)", "");
+    CartogramName.put("Internet hosts", "");
+    CartogramName.put("Internet users", "");
+    CartogramName.put("Investment (gross fixed)(% of GDP)", "");
+    CartogramName.put("Labor force", "");
+    CartogramName.put("Life expectancy at birth(years)", "");
+    CartogramName.put("Military expenditures - dollar figure", "");
+    CartogramName.put("Military expenditures - percent of GDP(%)", "");
+    CartogramName.put("Natural gas - consumption(cu m)", "");
+    CartogramName.put("Natural gas - exports(cu m)", "");
+    CartogramName.put("Natural gas - imports(cu m)", "");
+    CartogramName.put("Natural gas - production(cu m)", "");
+    CartogramName.put("Natural gas - proved reserves(cu m)", "");
+    CartogramName.put("Oil - consumption(bbl/day)", "");
+    CartogramName.put("Oil - exports(bbl/day)", "");
+    CartogramName.put("Oil - imports(bbl/day)", "");
+    CartogramName.put("Oil - production(bbl/day)", "");
+    CartogramName.put("Oil - proved reserves(bbl)", "");
+    CartogramName.put("Population", "");
+    CartogramName.put("Public debt(% of GDP)", "");
+    CartogramName.put("Railways(km)", "");
+    CartogramName.put("Reserves of foreign exchange & gold", "");
+    CartogramName.put("Telephones - main lines in use", "");
+    CartogramName.put("Telephones - mobile cellular", "");
+    CartogramName.put("Total fertility rate(children born/woman)", "");
+    CartogramName.put("Unemployment rate(%)", "");
 }
 
 void draw() {
+    
     background(controlsBackgroundColor);
     map.draw();
     
@@ -125,6 +175,7 @@ void initializeButtons()
 void initialize()
 {
     map = new Map();
+    
     map.getBorderFromFile(mainFolder + "\\original borders.txt", true);
     
     getCountryInfo();
@@ -145,9 +196,18 @@ void mouseMoved()
 
 void mouseClicked()
 {
-    map.mouseClicked();
-    for(Button button: buttons)
+    if(!clicked)
     {
-        button.mouseClicked();
+        clicked = true;
+        map.mouseClicked();
+        for(Button button: buttons)
+        {
+            button.mouseClicked();
+        }
     }
+}
+
+void mouseReleased()
+{
+    clicked = false;
 }

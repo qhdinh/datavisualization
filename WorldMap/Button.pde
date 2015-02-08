@@ -1,5 +1,5 @@
 public class Button extends GUIControl
-{
+{    
     public color backgroundColor;
     public color hoverColor;
     public color clickedColor;
@@ -7,14 +7,14 @@ public class Button extends GUIControl
     public String caption;
     
     public int infoIndex;
-    
+
     public Button()
     {
         backgroundColor  = color(0, 255, 0, 255);
         hoverColor       = color(0, 255, 150, 255);
         clickedColor     = color(120, 0, 150, 255);
         textColor        = color(255, 0, 255, 255);  
-        state = STATE_NORMAL;  
+        state = STATE_NORMAL;
     }
   
     public void draw()
@@ -31,7 +31,7 @@ public class Button extends GUIControl
                 usedColor = clickedColor;
                 break;
         }
-      
+        
         fill(usedColor);
         rect(left, top, width(), height());
         fill(textColor);
@@ -49,10 +49,11 @@ public class Button extends GUIControl
     public void mouseClicked()
     {
         if(contains(mouseX, mouseY))
+        {
             state = STATE_CLICKED;
+            map.getBorderFromFile("D:\\Cartograms\\" + CartogramName.get(caption) + ".txt", false);
+        }
         else
             state = STATE_NORMAL;
-            
-        //map.getBorderFromFile("String", false);
     }
 }

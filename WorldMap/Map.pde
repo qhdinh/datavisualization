@@ -183,7 +183,7 @@ public class Map extends GUIControl
               File countriesNamesFile = new File(mainFolder + "\\names.txt");
               FileReader countriesNamesFileReader = new FileReader(countriesNamesFile.getAbsoluteFile());
               BufferedReader countriesNamesBufferedReader = new BufferedReader(countriesNamesFileReader);
-              
+                            
               String line = "";
               while ((line = countriesNamesBufferedReader.readLine()) != null) {
                   
@@ -200,7 +200,7 @@ public class Map extends GUIControl
                   newCountry.regions.clear();
                   String bufferString = countriesBordersBufferedReader.readLine();
                   int numOfPolygons = Integer.parseInt(bufferString);
-                  
+                  System.out.println("name " + name);
                   for(int i = 0; i < numOfPolygons; ++i)
                   {
                       bufferString = countriesBordersBufferedReader.readLine();
@@ -235,10 +235,13 @@ public class Map extends GUIControl
               }
               countriesNamesBufferedReader.close();
               countriesBordersBufferedReader.close();
-                     
+              
               map.normalizeRegionsFromRawBorder(minX, minY, maxX, maxY);
               map.fillSurfaceFromNormalizedBorder();
-              map.assignColorsToTheCountries();
+              
+              if(isEmptyMap)
+                  map.assignColorsToTheCountries();
+                  
               map.indexCountries();
         }
         catch (IOException e)
