@@ -130,10 +130,11 @@ void WriteToFile()
     for(int i = 1; i < countryFields.length; ++i)
     {
         try {
-            File infoFile = new File("D:\\data_" + countryFields[i] + ".txt");
+            String fileName = countryFields[i].replace("/","");
+            File infoFile = new File("D:\\data_" + fileName + ".txt");
             FileWriter infoFileWriter = new FileWriter(infoFile.getAbsoluteFile());
             BufferedWriter infoFileBufferWriter = new BufferedWriter(infoFileWriter);
-            System.out.println(countryFields[i]);
+            
             infoFileBufferWriter.write(countryFields[i] + "\r\n");
             for(Country country: map.countries)
             {

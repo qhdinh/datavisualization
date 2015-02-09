@@ -97,7 +97,7 @@ void initializeMap()
     map = new Map();    
     map.getBorderFromFile(mainFolder + "\\original borders.txt", true);
     getCountryInfo();
-    //WriteToFile();
+    WriteToFile();
 }
 
 void initialize()
