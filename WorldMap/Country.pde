@@ -55,6 +55,7 @@ public class Country extends GUIControl
         {
             region.draw();
         }
+        
     }
     
     public void drawInformation()
@@ -81,6 +82,7 @@ public class Country extends GUIControl
             if(region.normalizedBorder.contains(mouseX, mouseY))
             {
                 state = STATE_CLICKED;
+                chooseCountryToList(name);
                 break;
             }
     }

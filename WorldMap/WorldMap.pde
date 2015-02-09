@@ -4,7 +4,6 @@
 |------------------------|
 */
 
-
 import java.beans.PropertyDescriptor;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,6 +38,7 @@ import java.awt.Polygon;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.Rectangle;
+import controlP5.*;
 
 int screenWidth = 1366;
 int screenHeight = 768;
@@ -46,20 +46,18 @@ int screenHeight = 768;
 int midX = (0 + screenWidth) / 2;
 int midY = (0 + screenHeight) / 2;
 
-Map map = null;
-
 //Main folder of the project containing all the necessary data to draw the map
 //String mainFolder = "D:\\Cloud\\Copy\\Copy\\Projects\\Processing\\WorldMap data\\Map 1";
 //String mainFolder = "H:/INF229/projet/datavisualization/Data";
 String mainFolder = "D:\\";
 
-//Colors of the countries, modify this to get a more beautiful map :D
-color[] countryColors = new color[]{ color(0, 140, 0, 255), color(255, 0, 160, 255),
-                                    color(63, 76, 107, 255), color(199, 152, 16, 255), color(128, 0, 0, 255),
-                                    color(218, 165, 32, 255), color(0, 255, 255, 255)};
+color[] countryColors = new color[]{ color(179, 153, 255, 255), color(255, 253, 230, 255),
+                                    color(255, 214, 92, 255), color(255, 179, 153, 255), 
+                                    color(153, 255, 179, 255),
+                                    color(255, 230, 153, 255), color(153, 255, 182, 255)};
 //Color of the seas
-color seaColor = color(168, 255, 255, 255);
-color controlsBackgroundColor = color(0, 0, 255, 255);
+color seaColor = color(77, 210, 255, 100);
+color controlsBackgroundColor = color(255, 255, 255, 255);
 
 //Only used for normalizing the borders
 boolean[][] screenMark = new boolean[screenWidth][screenHeight];
@@ -67,13 +65,15 @@ boolean[][] screenMark = new boolean[screenWidth][screenHeight];
 int ratio = 100;
 
 String[] countryFields;
-List<Button> buttons;
+
+List<String> chosenCountryNames = new ArrayList();
+List<String> chosenCriteria = new ArrayList();
 
 int textHeight = 16;
 
-java.util.Map CartogramName = new HashMap();
+ControlP5 controlP5;
 
-boolean clicked = false;
+Map map = null;
 
 //Turn on full-screen mode
 boolean sketchFullScreen() {
@@ -82,132 +82,80 @@ boolean sketchFullScreen() {
 
 void setup() {
     PFont labelFont = loadFont("ArialMT-30.vlw");
-    textFont(labelFont, textHeight);
-
+    textFont(labelFont, textHeight);    
     size(screenWidth, screenHeight);
     initialize();
-    
-    CartogramName.put("Area", "Area");
-    CartogramName.put("Birth rate(births/1000 population)", "");
-    CartogramName.put("Current account balance", "");
-    CartogramName.put("Death rate(deaths/1000 population)", "");
-    CartogramName.put("Debt - external", "Debt");
-    CartogramName.put("Electricity - consumption(kWh)", "Elec_con");
-    CartogramName.put("Electricity - production(kWh)", "Elec_pro");
-    CartogramName.put("Exports", "Exports");
-    CartogramName.put("GDP", "GDP");
-    CartogramName.put("GDP - per capita", "GDP_capita");
-    CartogramName.put("GDP - real growth rate(%)", "GDP_growth");
-    CartogramName.put("HIV/AIDS - adult prevalence rate(%)", "");
-    CartogramName.put("HIV/AIDS - deaths", "");
-    CartogramName.put("HIV/AIDS - people living with HIV/AIDS", "");
-    CartogramName.put("Highways(km)", "Highways");
-    CartogramName.put("Imports", "Imports");
-    CartogramName.put("Industrial production growth rate(%)", "Indus_pro");
-    CartogramName.put("Infant mortality rate(deaths/1000 live births)", "");
-    CartogramName.put("Inflation rate (consumer prices)(%)", "Inflation");
-    CartogramName.put("Internet hosts", "Net_hosts");
-    CartogramName.put("Internet users", "Net_users");
-    CartogramName.put("Investment (gross fixed)(% of GDP)", "Investment");
-    CartogramName.put("Labor force", "Labor");
-    CartogramName.put("Life expectancy at birth(years)", "Life_exp");
-    CartogramName.put("Military expenditures - dollar figure", "Mi_dollar");
-    CartogramName.put("Military expenditures - percent of GDP(%)", "Mi_GDP");
-    CartogramName.put("Natural gas - consumption(cu m)", "Gas_con");
-    CartogramName.put("Natural gas - exports(cu m)", "Gas_exp");
-    CartogramName.put("Natural gas - imports(cu m)", "Gas_imp");
-    CartogramName.put("Natural gas - production(cu m)", "Gas_pro");
-    CartogramName.put("Natural gas - proved reserves(cu m)", "Gas_res");
-    CartogramName.put("Oil - consumption(bbl/day)", "");
-    CartogramName.put("Oil - exports(bbl/day)", "");
-    CartogramName.put("Oil - imports(bbl/day)", "");
-    CartogramName.put("Oil - production(bbl/day)", "");
-    CartogramName.put("Oil - proved reserves(bbl)", "");
-    CartogramName.put("Population", "Population");
-    CartogramName.put("Public debt(% of GDP)", "Pub_debt");
-    CartogramName.put("Railways(km)", "Railways");
-    CartogramName.put("Reserves of foreign exchange & gold", "Res_fe");
-    CartogramName.put("Telephones - main lines in use", "Main_phone");
-    CartogramName.put("Telephones - mobile cellular", "Cell_phone");
-    CartogramName.put("Total fertility rate(children born/woman)", "");
-    CartogramName.put("Unemployment rate(%)", "Unemploy");
 }
 
 void draw() {
-    
     background(controlsBackgroundColor);
     map.draw();
-    
-    for(Button button: buttons)
-        button.draw();
 }
 
-void initializeButtons()
+void initializeMap()
 {
-    buttons = new ArrayList();
-    int initX = 5;
-    int buttonWidth = 100;
-    int initY = 50;
-    int buttonHeight = 100; 
-    
-    for(int i = 1; i < 12; ++i)
-    {
-        Button newButton = new Button();
-        
-        int reducedPosition = countryFields[i].indexOf('(');
-        if(reducedPosition > 0)
-            newButton.caption = countryFields[i].substring(0, reducedPosition);
-        else
-            newButton.caption = countryFields[i];
-        
-        newButton.left = initX;
-        newButton.top = initY;
-        newButton.right = newButton.left + (int)textWidth(newButton.caption) + 20;
-        newButton.bottom = newButton.top + textHeight + 20;
-        newButton.infoIndex = i;
-        
-        buttons.add(newButton);
-        
-        initX += newButton.width();
-    }
+    map = new Map();    
+    map.getBorderFromFile(mainFolder + "\\original borders.txt", true);
+    getCountryInfo();
+    //WriteToFile();
 }
 
 void initialize()
 {
-    map = new Map();
-    
-    map.getBorderFromFile(mainFolder + "\\original borders.txt", true);
-    
-    getCountryInfo();
+    controlP5 = new ControlP5(this);
+    initializeCartogramFiles();
+    initializeMap();
     initializeButtons();
-    
-    
-    WriteToFile();
+    initializeCountryList();
+    initializeCriteriaList();
 }
 
 void mouseMoved()
 {
     map.mouseMoved();
-    for(Button button: buttons)
-    {
-        button.mouseMoved();
-    }
 }
 
 void mouseClicked()
 {
-    if(!clicked)
-    {
-        clicked = true;
-        map.mouseClicked();
-        for(Button button: buttons)
-        {
-            button.mouseClicked();
+    map.mouseClicked();
+}
+
+void controlEvent(ControlEvent event) {
+    
+    if(event.isGroup()){
+        if(event.name().equals("countryList")){
+            countryListControlEvent(event);
+        }
+        else if(event.name().equals("chosenCountryList")){
+            chosenCountryListControlEvent(event);
+        }
+        else if(event.name().equals("criteriaList")){
+            criteriaListControlEvent(event);
+        }
+        else if(event.name().equals("chosenCriteriaList")){
+            chosenCriteriaListControlEvent(event);
         }
     }
 }
 
-void mouseReleased()
+void updateListOfChosenCountriesAndCriteria()
 {
-    clicked = false;
+    chosenCountryNames.clear();
+    chosenCriteria.clear();
+    
+    if(chosenCountryList != null)
+    {
+        System.out.println("chosenCountryList" + chosenCountryList.getListBoxItems().length);
+        String[][] countryNames = chosenCountryList.getListBoxItems();
+        for(int i = 0; i < countryNames.length; ++i)
+            chosenCountryNames.add(countryNames[i][0]);
+    }
+    
+    if(chosenCriteriaList != null)
+    {
+        System.out.println("chosenCriteriaList" + chosenCriteriaList.getListBoxItems().length);
+        String[][] criteriaNames = chosenCriteriaList.getListBoxItems();
+        for(int i = 0; i < criteriaNames.length; ++i)
+            chosenCriteria.add(criteriaNames[i][0]);
+    }
 }

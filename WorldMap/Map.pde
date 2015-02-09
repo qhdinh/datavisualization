@@ -21,10 +21,10 @@ public class Map extends GUIControl
     
     public Map()
     {
-        left = 20;
-        top = 100;
-        right = 1346;
-        bottom = 748;
+        left = 10;
+        top = 10;
+        right = 1066;
+        bottom = 618;
         countries = new ArrayList();
         this.ratio = ratio;
         countryIndices = new int[screenHeight][screenWidth];
@@ -44,7 +44,7 @@ public class Map extends GUIControl
         }
         
         for(Country country : countries)
-            if(country.state == STATE_CLICKED)
+            if(country.state == STATE_HOVER)
                 country.drawInformation();
     }
     

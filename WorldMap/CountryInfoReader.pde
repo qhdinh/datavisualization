@@ -127,14 +127,6 @@ void getCountryInfo()
 
 void WriteToFile()
 {
-    
-    /*for(Country country: map.countries)
-    {
-        System.out.println(country.name);
-    }*/
-    
-    System.out.println(countryFields.length);
-    
     for(int i = 1; i < countryFields.length; ++i)
     {
         try {
