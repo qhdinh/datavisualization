@@ -13,7 +13,7 @@ CategorySelector catSelector1, catSelector2;
 
 void setup() {
     size(840, 640);
-    fulldata = new DataRead("c:/factbook.csv");
+    fulldata = new DataRead("~/factbook.csv");
     catSelector1 = new CategorySelector(fulldata, width -200, 20);
     catSelector2 = new CategorySelector(fulldata, width -200, 50);
 

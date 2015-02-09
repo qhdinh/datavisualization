@@ -20,7 +20,7 @@ graphLabel continentLabel;
 void setup() {
     size(840, 640);
     textSize(11);
-    fulldata = new DataRead("c:/factbook.csv");
+    fulldata = new DataRead(sketchPath + "/factbook.csv");
     catSelector1 = new CategorySelector(fulldata, width -200, 20, "X axis");
     catSelector2 = new CategorySelector(fulldata, width -200, 55, "Y axis");
     smooth();
@@ -58,6 +58,10 @@ void draw() {
   
   fill(220,130,150,150);
   for(DataPoint dp : dataplot){
+      int c = continentLabel.getContinentCode(dp.continentName);
+      if(!continentLabel.isPlotOn(c))
+        continue;
+    
       float x = (dp.x - minX)/(maxX-minX);
       float y = 1-(dp.y - minY)/(maxY-minY);
       if(isLogPlotX)
@@ -122,5 +126,6 @@ void mousePressed()
   catSelector2.click(mouseX, mouseY);
   cBoxX.click(mouseX, mouseY);
   cBoxY.click(mouseX, mouseY);
+  continentLabel.click(mouseX, mouseY);
 }
 
