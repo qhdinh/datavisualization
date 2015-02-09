@@ -26,16 +26,15 @@ class CorrelationGraph{
     this.Y = Y;
     this.vwidth = vwidth;
     this.vheight = vheight;
-    //size(840, 640);
     textSize(11);
     fulldata = new DataRead(sketchPath + "/factbook.csv");
-    catSelector1 = new CategorySelector(fulldata, vwidth -200, 20, "X axis");
-    catSelector2 = new CategorySelector(fulldata, vwidth -200, 55, "Y axis");
+    catSelector1 = new CategorySelector(fulldata, X + vwidth -200, Y + 20, "X axis");
+    catSelector2 = new CategorySelector(fulldata, X + vwidth -200, Y + 55, "Y axis");
     smooth();
-    cBoxX = new checkBox(vwidth - 50, vheight - 50, false, "Log plot X:");
-    cBoxY = new checkBox(vwidth - 50, vheight - 30, false, "Log plot Y:");
+    cBoxX = new checkBox(X + vwidth - 50, Y + vheight - 50, false, "Log plot X:");
+    cBoxY = new checkBox(X + vwidth - 50, Y + vheight - 30, false, "Log plot Y:");
     
-    continentLabel = new graphLabel(vwidth-100,vheight - 250);
+    continentLabel = new graphLabel(X + vwidth-100,Y + vheight - 250);
   
   }
   
@@ -48,13 +47,13 @@ class CorrelationGraph{
     int bd = 15;   // border space
     stroke(0);
     fill(0);
-    line( bd, vheight-bd, vwidth-bd - 200, vheight-bd );  // x-axis
+    line( X + bd, Y + vheight-bd, X + vwidth-bd - 200, Y + vheight-bd );  // x-axis
     textAlign(CENTER,TOP);
-    text( catSelector1.getSelectedName(), vwidth/2- 200, vheight-bd );          // ALWAYS label your axes!
-    line( bd, bd, bd, vheight-bd );  // y-axis
+    text( catSelector1.getSelectedName(), X + (X+vwidth)/2- 200, Y + vheight-bd );          
+    line( X + bd, Y + bd, X + bd, Y + vheight-bd );  // y-axis
     pushMatrix();
       rotate( radians(-90) );
-      text( catSelector2.getSelectedName(), -vwidth/2, 0 );
+      text( catSelector2.getSelectedName(), -Y-(vheight/2), X );
     popMatrix();
     
     dataplot = fulldata.getData(catSelector1.getCode(), catSelector2.getCode());
@@ -79,14 +78,14 @@ class CorrelationGraph{
         if(dp.name.equals(selectedName)){
           textSize(12);
           fulldata.setContinentColor(dp.continentName);
-          ellipse( x*(vwidth-230) + 15, y*(vheight-35)+17, 13, 13 );
+          ellipse(X + x*(vwidth-230) + 15, Y+ y*(vheight-35)+17, 13, 13 );
           fill(0);
-          text(dp.name, x*(vwidth-230) + 15, y*(vheight-35)-3);
+          text(dp.name, X+ x*(vwidth-230) + 15, Y+y*(vheight-35)-3);
           fill(220,130,150,150);
           textSize(11);
         }else{
           fulldata.setContinentColor(dp.continentName);
-          ellipse( x*(vwidth-230) + 15, y*(vheight-35)+17, 7, 7 );
+          ellipse( X + x*(vwidth-230) + 15, Y + y*(vheight-35)+17, 7, 7 );
         }
     }
     //trace 0 lines
@@ -102,6 +101,8 @@ class CorrelationGraph{
   
   
   public void mouseMoved(int xmouse, int ymouse){
+     xmouse = xmouse - X;
+     ymouse = ymouse - Y;
      if(dataplot == null) return;
        float max = 10;
        
