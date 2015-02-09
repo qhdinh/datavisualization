@@ -33,8 +33,8 @@ class Label{
       stroke(255);
       line(69,50+num*20+19,17,50+num*20+19);
       fill(255);
-      labelFont1 = loadFont("Gulim-48.vlw");
-      textFont(labelFont1,14);
+      labelFont1 = loadFont("Dotum-14.vlw");
+      //textFont(labelFont1,14);
       text(str,16,50+num*20+14);
     }
     if(axis==1){
@@ -48,8 +48,8 @@ class Label{
       rect(70+num*xgap,30,xgap-5,20,7,7,0,0);
       stroke(255);
       fill(255);
-      labelFont1 = loadFont("Gulim-48.vlw");
-      textFont(labelFont1,14);
+      labelFont1 = loadFont("Dotum-14.vlw");
+      //textFont(labelFont1,14);
       text(str,70+num*xgap+5,44);
     }
   }
@@ -72,8 +72,8 @@ class Label{
       stroke(255);
       line(69,50+num*20+19,17,50+num*20+19);
       fill(255);
-      labelFont1 = loadFont("Gulim-48.vlw");
-      textFont(labelFont1,14);
+      labelFont1 = loadFont("Dotum-14.vlw");
+      //textFont(labelFont1,14);
       text(name,16,50+num*20+14);
     }
     if(axis==1){
@@ -92,8 +92,8 @@ class Label{
       this.lheight=20;
       stroke(255);
       fill(255);
-      labelFont1 = loadFont("Gulim-48.vlw");
-      textFont(labelFont1,14);
+      labelFont1 = loadFont("Dotum-14.vlw");
+      //textFont(labelFont1,14);
       text(name,70+num*xgap+5,44);
     }
   }
