@@ -60,6 +60,7 @@ class Cell{
     rect(this.xspot,this.yspot,this.cwidth-1,this.cheight);
     if(this.value>=0)fill(80);
     else fill(240,128,128);
+    labelFont1 = loadFont("Dotum-12.vlw");
     textFont(labelFont1,12);
     text(ss,this.xspot,this.yspot+15);
   }

@@ -14,7 +14,7 @@ Label[] xlabel;
 Cell[] cells;
 Label mousemovelabel=null;
 Label lastlabel=null;
-Label clikclabel=null;
+//Label clikclabel=null;
 Cell mousemovecell=null;
 Cell lastcell = null;
 int oney;
@@ -25,10 +25,14 @@ int uselog = 0;
 int nupdown = 0;
 int nleftright = 0;
 DataRead datasets = null;
-
+String sortcri="Choose Critera";
+char[] searchname;
+int snum=0;
+char[] nametemp;
+boolean search = false;
 
 void setup(){
-  size(500,500);
+  size(640,500);
   //background(255);
   datasets = new DataRead();
   counsele = new Country[263];
@@ -60,23 +64,22 @@ void setup(){
   if(counsele[1]==null)println("1=null");
   crisele = new Criteria[44];
   ////////////////////////////////////initialisation manually
-  Criteria cr1 = new Criteria("Population",0);
-  Criteria cr2 = new Criteria("Area(sq km)",0);
-  Criteria cr3 = new Criteria("Birth rate(births/1000 population)",1);
-  Criteria cr4 = new Criteria("Death rate(deaths/1000 population)",3);
-  Criteria cr5 = new Criteria("Current account balance",36);
   
   for(i=0;i<44;i++){
     Criteria cri = new Criteria(datasets.criteria[i].name,i);
     crisele[i]=cri;
   }
   
+  searchname = new char[30];
   /*crisele[0]=cr1;
   crisele[1]=cr2;
   crisele[2]=cr3;
   crisele[3]=cr4;
   crisele[4]=cr5;*/
-  
+  labelFont1 = loadFont("Dotum-14.vlw");
+  textFont(labelFont1,14);
+  fill(30,144,255);
+  findscale();
 }
 
 void draw(){
@@ -96,6 +99,8 @@ void draw(){
   mymask();
   drawaxis();
   drawmousemovecell();
+  noting();
+  search();
   //println(datasets.getData(0,2)+","+datasets.getCricode("Area(sq km)")+","+datasets.getCouncode("Albania")+"Aou...");
   //println(datasets.getData(datasets.getCricode("Area(sq km)"),datasets.getCouncode("Albania")));
   //println("crinum="+crinum);
@@ -124,21 +129,19 @@ void findscale(){
 
 void drawaxis(){
   //translate(-20*nleftright,-ygap*nupdown);
-  labelFont1 = loadFont("Dotum-20.vlw");
-  textFont(labelFont1,18);
-  fill(30,144,255);
   text("General View", 180,20);
-  findscale();
   fill(120);
   stroke(120);
   line(70,50,450,50);
   triangle(450,47,450,53,457,50);
   line(70,50,70,450);// no consider the scroller first
   triangle(67,450,73,450,70,457);
-  int i;
-  for(i=0;i<crinum;i++){
+  int i,xlabelnum;
+  if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+  else xlabelnum=crinum;
+  for(i=-nleftright;i<xlabelnum;i++){
     stroke(120);
-    line(70+i*xgap,50,70+i*xgap,450);
+    line(70+(i+nleftright)*xgap,50,70+(i+nleftright)*xgap,450);
   }
 }
 
@@ -225,7 +228,8 @@ void drawmousemovecell(){
       fill(240,128,128);
     }
     noStroke();
-    textFont(labelFont1,14);
+    labelFont1 = loadFont("Dotum-14.vlw");
+    //textFont(labelFont1,14);
     String ss=str(s);
     if(ss.equals("NaN")){
       ss="no Value";
@@ -434,6 +438,7 @@ void mouseMoved(){
 
 void mouseClicked(){
   int i,j,ylabelnum,xlabelnum;
+  
   if(counnum>-nupdown+20)ylabelnum=-nupdown+20;
   else ylabelnum=counnum;
    //ylabel;
@@ -500,6 +505,27 @@ void keyPressed(){
       nupdown=0;
       nleftright=0;
     }
+    if(key=='s'){
+      sorting();
+    }
+    if(keyCode==CONTROL){
+      search=true;
+    }
+  }
+  if(search==true){
+    int i;
+    if(snum==0){
+      for(i=0;i<searchname.length;i++){
+        searchname[i]=0;
+      }
+    }
+    if(keyCode==BACKSPACE && snum>0)snum--;
+    if(keyCode!=BACKSPACE && keyCode!=SHIFT && keyCode!=ENTER && keyCode!=CONTROL){
+      searchname[snum]=key;
+      println("snum="+snum);
+      snum++;
+    }
+    if(keyCode==ENTER && search==true)nametemp = new char[snum];
   }
 }
 
@@ -520,7 +546,7 @@ void updownmask(){
   fill(255);
   noStroke();
   //rect(0,450,500,50);
-  rect(0,0,500,70);
+  rect(0,40,500,30);
   ylabel[0].draw(); 
   drawxlabel();
 }
@@ -532,13 +558,145 @@ void lrmask(){
   drawylabel();
 }
 void mymask(){
-  fill(255);
-  noStroke();
+  //fill(255);
+  //noStroke();
   //rect(0,450,500,50);
-  fill(126,192,238);
+  fill(120);
   text("Note: Press the key UP,DOWN,LEFT and RIGHT to change view",10,470);
   text("           Press key l to change into log ",10,485);
   //fill(255);
   //rect(450,0,70,500);
 }
 
+void sorting(){
+  if(mousemovelabel!=null){
+    if(mousemovelabel.axis==1){
+      sortcri=mousemovelabel.name;
+      int i,j;
+      double temp,mmax;
+      Country ctemp = new Country();
+      int ccoun=0;
+      float s;
+      String ss;
+      for(i=0;i<counnum;i++){
+        mmax=datasets.getData(datasets.getCricode(mousemovelabel.name),datasets.getCouncode(counsele[i].name));
+        ccoun=i;
+        for(j=i;j<counnum;j++){
+          temp=datasets.getData(datasets.getCricode(mousemovelabel.name),datasets.getCouncode(counsele[j].name));
+          s=(float)(temp);
+          ss=str(s);
+          if(ss.equals("NaN"))continue;
+          if(temp>mmax){
+            //println("temp="+temp+"max="+mmax);
+            mmax=temp;
+            ccoun=j;
+          }
+        }
+        //println("to be change="+counsele[i].name);
+        //println("max="+counsele[ccoun].name);
+        ctemp.name=counsele[i].name;
+        ctemp.councode=i;
+        counsele[i].name=counsele[ccoun].name;
+        counsele[i].councode=j;
+        counsele[ccoun].name=ctemp.name;
+        counsele[ccoun].councode=ctemp.councode;
+      }
+    }
+  }
+}
+
+void noting(){
+  color[] col = new color[3];
+  col[2]=color(240,128,128);
+  col[1]=color(255,160,122);
+  col[0]=color(255,193,193);
+
+  int i;
+  for(i=0;i<3;i++){
+    noStroke();
+    fill(col[i],200);
+    ellipse(490,100,20-i*6,20-i*6);
+  }
+  fill(120);
+  labelFont1 = loadFont("Dotum-14.vlw");
+  //textFont(labelFont1,14);
+  text("Sorting",510,106);
+  text(sortcri,480,136);
+  
+  for(i=0;i<3;i++){
+    noStroke();
+    fill(col[i]);
+    ellipse(490,200,20-i*6,20-i*6);
+  }
+  fill(120);
+  text("UP",510,206);
+  
+  for(i=0;i<3;i++){
+    noStroke();
+    fill(col[i]);
+    ellipse(490,250,20-i*6,20-i*6);
+  }
+  fill(120);
+  text("DOWN",510,256);
+  
+  for(i=0;i<3;i++){
+    noStroke();
+    fill(col[i]);
+    ellipse(490,300,20-i*6,20-i*6);
+  }
+  fill(120);
+  text("LEFT",510,306);
+  
+  for(i=0;i<3;i++){
+    noStroke();
+    fill(col[i]);
+    ellipse(490,350,20-i*6,20-i*6);
+  }
+  fill(120);
+  text("RIGHT",510,356);
+}
+
+void search(){
+  //labelFont1 = loadFont("Dotum-12.vlw");
+  int i=0;
+  fill(120);
+  text("SEARCH:",500,400);
+  text("Country's name", 500,430);
+  if(keyCode==ENTER){
+    for(i=0;i<searchname.length;i++){
+      text(searchname[i],500+i*7,460);
+      if(i<snum && (snum!=0))nametemp[i]=searchname[i];
+    }
+    
+    String ssname = new String(nametemp);
+    //println("***"+ssname+"***");
+    for(i=0;i<counnum;i++){
+      if(ssname.equals(counsele[i].name)){
+        searchcoun(ssname);
+        fill(120);
+        text("Find "+ssname+" :)", 500,490);
+        break;
+      }
+    }
+    if(i==counnum)text("Cannot find it :(",500,490);
+    snum=0;  
+    search=false;
+  }
+  
+}
+
+void searchcoun(String str){
+  int i,j,shift,xlabelnum,ylabelnum;
+  shift=datasets.getCouncode(str);
+  nupdown=-shift;
+  if(counnum>-nupdown+19)ylabelnum=-nupdown+19;
+   else ylabelnum=counnum;
+  if(crinum>-nleftright+5)xlabelnum=-nleftright+5;
+   else xlabelnum=crinum;
+   
+  for(i=-nleftright;i<xlabelnum;i++){
+    cells[(i+nleftright)*(ylabelnum+nupdown)].draw();
+    //println("@@@@@@@@@@@@@@@");
+  }
+  
+}
