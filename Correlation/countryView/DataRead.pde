@@ -93,7 +93,7 @@ class DataRead{
       }
  
     } catch (IOException e) {
-      continue;
+      e.printStackTrace();
     } finally{
       try{
         br.close();
