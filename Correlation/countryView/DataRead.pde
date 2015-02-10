@@ -22,7 +22,7 @@ class DataRead{
                                      Float.parseFloat(data.get(i).get(codeY)),
                                      data.get(i).get(columnTypes.size())));
          }catch(Exception e){
-             continue;
+             e.printStackTrace();
          }
      }
     return dlist; 
@@ -93,7 +93,7 @@ class DataRead{
       }
  
     } catch (IOException e) {
-      e.printStackTrace();
+      continue;
     } finally{
       try{
         br.close();
