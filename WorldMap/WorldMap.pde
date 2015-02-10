@@ -49,7 +49,7 @@ int midY = (0 + screenHeight) / 2;
 //Main folder of the project containing all the necessary data to draw the map
 //String mainFolder = "D:\\Cloud\\Copy\\Copy\\Projects\\Processing\\WorldMap data\\Map 1";
 //String mainFolder = "H:/INF229/projet/datavisualization/Data";
-String mainFolder = "D:\\";
+String mainFolder = "C:\\Data";
 
 color[] countryColors = new color[]{ color(179, 153, 255, 255), color(255, 253, 230, 255),
                                     color(255, 214, 92, 255), color(255, 179, 153, 255), 
@@ -74,6 +74,7 @@ int textHeight = 16;
 ControlP5 controlP5;
 
 Map map = null;
+CorrelationGraph correlationGraph;
 
 //Turn on full-screen mode
 boolean sketchFullScreen() {
@@ -89,7 +90,8 @@ void setup() {
 
 void draw() {
     background(controlsBackgroundColor);
-    map.draw();
+    //map.draw();
+    correlationGraph.draw();
 }
 
 void initializeMap()
@@ -103,6 +105,7 @@ void initializeMap()
 void initialize()
 {
     controlP5 = new ControlP5(this);
+    correlationGraph = new CorrelationGraph(10,10,1000,600);
     initializeCartogramFiles();
     initializeMap();
     initializeButtons();
@@ -112,12 +115,14 @@ void initialize()
 
 void mouseMoved()
 {
-    map.mouseMoved();
+    //map.mouseMoved();
+    correlationGraph.mouseMoved(mouseX, mouseY);
 }
 
 void mouseClicked()
 {
-    map.mouseClicked();
+    //map.mouseClicked();
+    correlationGraph.mousePressed(mouseX, mouseY);
 }
 
 void controlEvent(ControlEvent event) {
