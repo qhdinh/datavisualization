@@ -5,4 +5,8 @@ void correlationButton(int value)
     //The list of chosen country names is chosenCountryNames    
     //The list of chosen criteria is chosenCriteria
     //U can read the file WorldMap
+    if(usedMode != MODE_CORRELATION)
+    {
+        usedMode = MODE_CORRELATION;
+    }
 }

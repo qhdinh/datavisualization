@@ -47,9 +47,7 @@ int midX = (0 + screenWidth) / 2;
 int midY = (0 + screenHeight) / 2;
 
 //Main folder of the project containing all the necessary data to draw the map
-//String mainFolder = "D:\\Cloud\\Copy\\Copy\\Projects\\Processing\\WorldMap data\\Map 1";
-//String mainFolder = "H:/INF229/projet/datavisualization/Data";
-String mainFolder = "C:\\Data";
+String mainFolder = "data";
 
 color[] countryColors = new color[]{ color(179, 153, 255, 255), color(255, 253, 230, 255),
                                     color(255, 214, 92, 255), color(255, 179, 153, 255), 
@@ -81,23 +79,40 @@ boolean sketchFullScreen() {
     return true;
 }
 
+static final int MODE_CARTOGRAM = 0;
+static final int MODE_CORRELATION = 1;
+static final int MODE_OTHER = 2;
+
+int usedMode = MODE_CARTOGRAM;
+
 void setup() {
     PFont labelFont = loadFont("ArialMT-30.vlw");
     textFont(labelFont, textHeight);    
     size(screenWidth, screenHeight);
+
     initialize();
+    
 }
 
 void draw() {
     background(controlsBackgroundColor);
-    //map.draw();
-    correlationGraph.draw();
+    switch(usedMode)
+    {
+        case MODE_CARTOGRAM:
+            map.draw();
+            break;
+        case MODE_CORRELATION:
+            correlationGraph.draw();
+            break;
+        case MODE_OTHER:
+            break;
+    }
 }
 
 void initializeMap()
 {
     map = new Map();    
-    map.getBorderFromFile(mainFolder + "\\original borders.txt", true);
+    map.getBorderFromFile(sketchPath(mainFolder + "\\Cartograms\\Area.txt"), true);
     getCountryInfo();
     WriteToFile();
 }
@@ -115,14 +130,32 @@ void initialize()
 
 void mouseMoved()
 {
-    //map.mouseMoved();
-    correlationGraph.mouseMoved(mouseX, mouseY);
+    switch(usedMode)
+    {
+        case MODE_CARTOGRAM:
+            map.mouseMoved();
+            break;
+        case MODE_CORRELATION:
+            correlationGraph.mouseMoved(mouseX, mouseY);
+            break;
+        case MODE_OTHER:
+            break;
+    }
 }
 
 void mouseClicked()
 {
-    //map.mouseClicked();
-    correlationGraph.mousePressed(mouseX, mouseY);
+    switch(usedMode)
+    {
+        case MODE_CARTOGRAM:
+            map.mouseClicked();
+            break;
+        case MODE_CORRELATION:
+            correlationGraph.mousePressed(mouseX, mouseY);
+            break;
+        case MODE_OTHER:
+            break;
+    }
 }
 
 void controlEvent(ControlEvent event) {

@@ -168,6 +168,7 @@ public class Map extends GUIControl
     
     public void getBorderFromFile(String filename, boolean isEmptyMap)
     {
+        System.out.println(filename);
         float minX = 0;
         float maxX = 0;
         float minY = 0;
@@ -180,7 +181,7 @@ public class Map extends GUIControl
               FileReader countriesBordersFileReader = new FileReader(countriesBordersFile.getAbsoluteFile());
               BufferedReader countriesBordersBufferedReader = new BufferedReader(countriesBordersFileReader);
               
-              File countriesNamesFile = new File(mainFolder + "\\names.txt");
+              File countriesNamesFile = new File(sketchPath(mainFolder + "\\names.txt"));
               FileReader countriesNamesFileReader = new FileReader(countriesNamesFile.getAbsoluteFile());
               BufferedReader countriesNamesBufferedReader = new BufferedReader(countriesNamesFileReader);
                             

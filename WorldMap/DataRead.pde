@@ -74,12 +74,14 @@ class DataRead{
   }
   
   public DataRead(String filename){
+
     BufferedReader br = null;
     try {
       
       String sCurrentLine;
       String [] items;
       br = new BufferedReader(new FileReader(filename));
+
       sCurrentLine = br.readLine();
       items = sCurrentLine.split(";");
       this.columns = Arrays.asList(items);
@@ -91,7 +93,7 @@ class DataRead{
           items = sCurrentLine.split(";");
           this.data.add(Arrays.asList(items));
       }
- 
+       
     } catch (IOException e) {
       e.printStackTrace();
     } finally{

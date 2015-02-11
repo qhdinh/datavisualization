@@ -27,7 +27,7 @@ class CorrelationGraph{
     this.vwidth = vwidth;
     this.vheight = vheight;
     textSize(11);
-    fulldata = new DataRead(sketchPath + "/factbook.csv");
+    fulldata = new DataRead(sketchPath(mainFolder + "\\factbook.csv"));
     catSelector1 = new CategorySelector(fulldata, X + vwidth -200, Y + 20, "X axis");
     catSelector2 = new CategorySelector(fulldata, X + vwidth -200, Y + 55, "Y axis");
     smooth();

@@ -1,33 +1,19 @@
 //This file is used for reading the data.
-/*
-File countriesScreenBordersFile = new File(mainFolder + "\\screen borders.txt");
-FileWriter countriesScreenBordersFileWriter = new FileWriter(countriesScreenBordersFile.getAbsoluteFile());
-BufferedWriter countriesScreenBordersBufferedWriter = new BufferedWriter(countriesScreenBordersFileWriter);          
-map.writeScreenBordersToFile(countriesScreenBordersBufferedWriter);
-countriesScreenBordersFileWriter.close();
-
-File countriesSurfacesFile = new File(mainFolder + "\\surfaces.txt");
-FileWriter countriesSurfacesFileWriter = new FileWriter(countriesSurfacesFile.getAbsoluteFile());
-BufferedWriter countriesSurfacesBufferedWriter = new BufferedWriter(countriesSurfacesFileWriter);
-map.writeSurfaceToFile(countriesSurfacesBufferedWriter);
-countriesSurfacesBufferedWriter.close();
-*/
-
 void getMapDataFromScreenBorder() {
     try {
           map = new Map();
 
           Charset charset = Charset.forName("UTF-8");
     
-          File countriesBordersFile = new File(mainFolder + "\\screen borders.txt");
+          File countriesBordersFile = new File(sketchPath(mainFolder + "\\screen borders.txt"));
           FileReader countriesBordersFileReader = new FileReader(countriesBordersFile.getAbsoluteFile());
           BufferedReader countriesBordersBufferedReader = new BufferedReader(countriesBordersFileReader);
           
-          File countriesSurfacesFile = new File(mainFolder + "\\surfaces.txt");
+          File countriesSurfacesFile = new File(sketchPath(mainFolder + "\\surfaces.txt"));
           FileReader countriesSurfacesFileReader = new FileReader(countriesSurfacesFile.getAbsoluteFile());
           BufferedReader countriesSurfacesBufferedReader = new BufferedReader(countriesSurfacesFileReader);
           
-          File countriesNamesFile = new File(mainFolder + "\\names.txt");
+          File countriesNamesFile = new File(sketchPath(mainFolder + "\\names.txt"));
           FileReader countriesNamesFileReader = new FileReader(countriesNamesFile.getAbsoluteFile());
           BufferedReader countriesNamesBufferedReader = new BufferedReader(countriesNamesFileReader);
           
@@ -92,7 +78,7 @@ void getMapDataFromScreenBorder() {
 void getCountryInfo()
 {
     try {
-        File countryInfoFile = new File(mainFolder + "\\world statistics.csv");
+        File countryInfoFile = new File(sketchPath(mainFolder + "\\factbook.csv"));
         FileReader countryInfoFileReader = new FileReader(countryInfoFile.getAbsoluteFile());
         BufferedReader countryInfoBufferedReader = new BufferedReader(countryInfoFileReader);
         
@@ -111,7 +97,7 @@ void getCountryInfo()
             if(readCountry != null)
             {
                 System.out.println(readCountry.name);
-                for(int i = 1; i < numOfFields; ++i)
+                for(int i = 1; i < numOfFields - 1; ++i)
                 if(!fieldData[i].isEmpty())
                 {
                     readCountry.addField(countryFields[i], Double.parseDouble(fieldData[i]));
