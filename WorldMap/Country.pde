@@ -60,8 +60,67 @@ public class Country extends GUIControl
     
     public void drawInformation()
     {
-        fill(color(0, 255, 255, 255));
-        rect(mouseX - 100, mouseY - 100, 100, 100);
+        final int TOP_LEFT = 0,
+                  TOP_RIGHT = 1,
+                  BOTTOM_LEFT = 2,
+                  BOTTOM_RIGHT = 3;
+        
+        int position = TOP_LEFT,
+            frameWidth = 6 + (int)textWidth(name),
+            frameHeight = 6 + textHeight,
+            top = 0,
+            left = 0,
+            bottom = 0,
+            right = 0;
+        
+        if(mouseX - frameWidth <= 0)
+        {
+            if(mouseY - frameHeight <= 0)
+                position = BOTTOM_RIGHT;
+            else
+                position = TOP_RIGHT;
+        }
+        else
+        {
+            if(mouseY - frameHeight <= 0)
+                position = BOTTOM_LEFT;
+            else
+                position = TOP_LEFT;
+        }
+        
+        switch(position)
+        {
+            case TOP_LEFT:
+                left = mouseX - frameWidth;
+                top = mouseY - frameHeight;
+                right = mouseX;
+                bottom = mouseY;
+                break;
+            case TOP_RIGHT:
+                left = mouseX;
+                top = mouseY - frameHeight;
+                right = mouseX + frameWidth;
+                bottom = mouseY;
+                break;
+            case BOTTOM_LEFT:
+                left = mouseX - frameWidth;
+                top = mouseY;
+                right = mouseX;
+                bottom = mouseY + frameHeight;
+                break;
+            case BOTTOM_RIGHT:
+                left = mouseX;
+                top = mouseY;
+                right = mouseX + frameWidth;
+                bottom = mouseY + frameHeight;
+                break;
+        }
+        
+        fill(color(149, 33, 246, 100));
+        rect(left, top, right - left + 1, bottom - top + 1);
+        fill(color(216, 0, 115, 255));
+        textSize(textHeight);
+        text(name, left + 4, top + textHeight + 2);
     }
     
     void mouseMoved()
