@@ -24,7 +24,7 @@ class Cell{
     this.sele=0;
   }
   public void findpos(){
-    this.xspot=371+numx*xgap;
+    this.xspot=71+numx*xgap;
     this.yspot=70+numy*ygap;
     this.cwidth=xgap;
     this.cheight=ygap;

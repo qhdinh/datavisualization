@@ -113,19 +113,19 @@ class Tables{
   
   void drawaxis(){
     //translate(-20*nleftright,-ygap*nupdown);
-    text("General View", 780,20);
+    text("General View", 380,20);
     fill(120);
     stroke(120);
-    line(370,50,1150,50);
-    triangle(1150,47,1150,53,1157,50);
-    line(370,50,370,450);// no consider the scroller first
-    triangle(367,450,373,450,370,457);
+    line(70,50,850,50);
+    triangle(850,47,850,53,857,50);
+    line(70,50,70,450);// no consider the scroller first
+    triangle(67,450,73,450,70,457);
     int i,xlabelnum;
     if(crinum>-nleftright+10)xlabelnum=-nleftright+10;
     else xlabelnum=crinum;
     for(i=-nleftright;i<xlabelnum;i++){
       stroke(120);
-      line(370+(i+nleftright)*xgap,50,370+(i+nleftright)*xgap,450);
+      line(70+(i+nleftright)*xgap,50,70+(i+nleftright)*xgap,450);
     }
   }
   
@@ -280,7 +280,7 @@ class Tables{
             fill(240,128,128);
           }
           else fill(120);
-          rect(371+(i+nleftright)*xgap,78+(j+nupdown)*ygap,llent,3);
+          rect(71+(i+nleftright)*xgap,78+(j+nupdown)*ygap,llent,3);
        }
      }
      
@@ -418,9 +418,9 @@ class Tables{
        lastcell=mousemovecell;
        //redraw();
      }
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-520)*(mouseY-520))<3600)clc=1;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-520)*(mouseY-520))<3600)clc=1;
     else clc=0;
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-420)*(mouseY-420))<3600)clct=1;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-420)*(mouseY-420))<3600)clct=1;
     else clct=0;
   }
   
@@ -467,8 +467,8 @@ class Tables{
      //if(l!=null && l!=lastlabel)println("I choose a label:"+l.name);
      //else if(c!=null && l!=lastlabel)println("I choose a cell:"+c.name+","+c.cri);
     // else if(l==null&&l!=lastlabel)println("nothing I choose"); 
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-520)*(mouseY-520))<3600)graphnum=1;
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-420)*(mouseY-420))<3600)graphnum=2;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-520)*(mouseY-520))<3600)graphnum=1;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-420)*(mouseY-420))<3600)graphnum=2;
     
   }
   
@@ -536,8 +536,8 @@ class Tables{
     //noStroke();
     //rect(0,450,500,50);
     fill(120);
-    text("Note: Press the key UP,DOWN,LEFT and RIGHT to change view",310,500);
-    text("           Press key l to change into log ",310,535);
+    text("Note: Press the key UP,DOWN,LEFT and RIGHT to change view",10,500);
+    text("           Press key l to change into log ",10,535);
     //fill(255);
     //rect(450,0,70,500);
   }
@@ -589,18 +589,18 @@ class Tables{
     for(i=0;i<3;i++){
       noStroke();
       fill(col[i],200);
-      ellipse(1190,100,20-i*6,20-i*6);
+      ellipse(890,100,20-i*6,20-i*6);
     }
     for(i=0;i<3;i++){
       noStroke();
       fill(col[i],200);
-      ellipse(1190,195,20-i*6,20-i*6);
+      ellipse(890,195,20-i*6,20-i*6);
     }
     fill(120);
     labelFont1 = loadFont("Dotum-14.vlw");
     //textFont(labelFont1,14);
-    text("Sorting",1210,106);
-    text(sortcri,1180,136);
+    text("Sorting",910,106);
+    text(sortcri,880,136);
     
     
   }
@@ -609,11 +609,11 @@ class Tables{
     //labelFont1 = loadFont("Dotum-12.vlw");
     int i=0;
     fill(120);
-    text("SEARCH:",1205,200);
-    text("Country's name", 1200,230);
+    text("SEARCH:",905,200);
+    text("Country's name", 900,230);
     if(keyCode==ENTER && keyCode!=SHIFT){
       for(i=0;i<searchnamet.length;i++){
-        text(searchnamet[i],1200+i*7,260);
+        text(searchnamet[i],900+i*7,260);
         if(i<snum && (snum!=0))nametemp[i]=searchnamet[i];
       }
       
@@ -624,11 +624,11 @@ class Tables{
           println("councode="+i);
           searchcoun(i);
           fill(120);
-          text("Find "+ssname+" :)", 1200,290);
+          text("Find "+ssname+" :)", 900,290);
           break;
         }
       }
-      if(i==counnum)text("Cannot find it :(",1200,290);
+      if(i==counnum)text("Cannot find it :(",900,290);
       snum=0;  
       search=false;
     }
@@ -654,25 +654,25 @@ class Tables{
    void graphchange(){
     noStroke();
     fill(126,192,238,100);
-    ellipse(1300,520,60,60);
-    ellipse(1300,420,60,60);
+    ellipse(940,520,60,60);
+    ellipse(940,420,60,60);
     if(clc==0)fill(126,192,238,180);
     else fill(120,180);
-    ellipse(1300,520,55,55);
+    ellipse(940,520,55,55);
 
     
     if(clct==0)fill(126,192,238,180);
     else fill(120,180);
-    ellipse(1300,420,55,55);
+    ellipse(940,420,55,55);
     stroke(255);
     strokeWeight(3);
-    line(1285,530,1285,510);
-    line(1285,530,1315,530);
-    line(1295,530,1295,505);
-    line(1305,530,1305,515);
-    line(1315,530,1315,520);
+    line(925,530,925,510);
+    line(925,530,955,530);
+    line(935,530,935,505);
+    line(945,530,945,515);
+    line(955,530,955,520);
     fill(255,0);
-    triangle(1290,430,1310,430,1300,410);
+    triangle(930,430,950,430,940,410);
     strokeWeight(1);
   }
   
