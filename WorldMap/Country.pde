@@ -116,9 +116,9 @@ public class Country extends GUIControl
                 break;
         }
         
-        fill(color(149, 33, 246, 100));
+        fill(color(255,255,255, 200));
         rect(left, top, right - left + 1, bottom - top + 1);
-        fill(color(216, 0, 115, 255));
+        fill(color(0,0,0, 255));
         textSize(textHeight);
         text(name, left + 4, top + textHeight + 2);
     }
