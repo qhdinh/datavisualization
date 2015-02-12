@@ -2,7 +2,7 @@
 //Each function of this class may call to the functions with the SAME NAME and PURPOSE of its members
 public class Map extends GUIControl
 {    
-  
+    String chosenCartogramCriteria = "Area";
     public List<Country> countries;
     
     //To zoom the map (if possible)

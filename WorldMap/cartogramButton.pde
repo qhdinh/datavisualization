@@ -10,8 +10,8 @@ void cartogramButton(int value)
     {
         if(chosenCriteria.size() >= 1)
         {
-            String usedCriteria = chosenCriteria.get(0);
-            map.getBorderFromFile(sketchPath(mainFolder + "\\Cartograms\\" + CartogramName.get(usedCriteria) + ".txt"), false);
+            map.chosenCartogramCriteria = chosenCriteria.get(0);
+            map.getBorderFromFile(sketchPath(mainFolder + "\\Cartograms\\" + CartogramName.get(map.chosenCartogramCriteria) + ".txt"), false);
         }
     }
 }

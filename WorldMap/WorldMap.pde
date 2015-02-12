@@ -81,6 +81,10 @@ ControlP5 controlP5;
 
 Map map = null;
 CorrelationGraph correlationGraph;
+Combi combi;
+
+boolean firstCorrelationButtonCall = true;
+boolean firstCombiButtonCall = true;
 
 //Turn on full-screen mode
 boolean sketchFullScreen() {
@@ -89,15 +93,17 @@ boolean sketchFullScreen() {
 
 static final int MODE_CARTOGRAM = 0;
 static final int MODE_CORRELATION = 1;
-static final int MODE_OTHER = 2;
-boolean firstCorrelationButtonCall = true;
+static final int MODE_COMBI = 2;
+
 int usedMode = MODE_CARTOGRAM;
 
 void setup() {
     PFont labelFont = loadFont("ArialMT-30.vlw");
     textFont(labelFont, textHeight);    
     size(screenWidth, screenHeight);
+
     initialize();
+    
 }
 
 void draw() {
@@ -110,7 +116,8 @@ void draw() {
         case MODE_CORRELATION:
             correlationGraph.draw();
             break;
-        case MODE_OTHER:
+        case MODE_COMBI:
+            combi.draw();
             break;
     }
 }
@@ -127,6 +134,8 @@ void initialize()
 {
     controlP5 = new ControlP5(this);
     correlationGraph = new CorrelationGraph(10,10,1000,600);
+    combi = new Combi();
+    
     initializeCartogramFiles();
     initializeMap();
     initializeButtons();
@@ -144,7 +153,8 @@ void mouseMoved()
         case MODE_CORRELATION:
             correlationGraph.mouseMoved(mouseX, mouseY);
             break;
-        case MODE_OTHER:
+        case MODE_COMBI:
+            combi.mouseMoved();
             break;
     }
 }
@@ -159,9 +169,15 @@ void mouseClicked()
         case MODE_CORRELATION:
             correlationGraph.mousePressed(mouseX, mouseY);
             break;
-        case MODE_OTHER:
+        case MODE_COMBI:
+            combi.mouseClicked();
             break;
     }
+}
+
+void keyPressed(){
+    if(usedMode == MODE_COMBI)
+        combi.keyPressed();
 }
 
 void controlEvent(ControlEvent event) {

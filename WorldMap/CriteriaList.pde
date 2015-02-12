@@ -38,8 +38,8 @@ void initializeCriteriaList()
     criteriaList.captionLabel().style().marginTop = 3;
     criteriaList.valueLabel().style().marginTop = 3;
     
-    for (int i = 0; i < countryFields.length; ++i) {
-        ListBoxItem lbi = criteriaList.addItem(countryFields[i], i);
+    for (int i = 1; i < countryFields.length - 1; ++i) {
+        ListBoxItem lbi = criteriaList.addItem(countryFields[i], i - 1);
         lbi.setColorBackground(CRITERIA_LIST_BACKGROUND);
     }
     

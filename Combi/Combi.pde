@@ -26,7 +26,7 @@ int graphnum=0;
 char[] searchnamet;
 
 void setup(){
-  size(1366,768);
+  size(1366, 768);
   int i,j;
   datasets1 = new DataRead();
   counsele = new Country[263];
