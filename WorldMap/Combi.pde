@@ -45,6 +45,8 @@ class Combi
     }
     
     void mouseMoved(){
+      if((mouseX < map.left) | (mouseX > map.right) | (mouseY < map.top) | (mouseY > map.bottom))
+          return;
       if(graphnum==0)tables.mouseMoved();
       else if(graphnum==1)mean.mouseMoved();
       else if(graphnum==2)star.mouseMoved();

@@ -26,14 +26,14 @@ void initializeButtons()
                                ;
     correlationButton.captionLabel().set("Correlation");
     
-    otherButton = controlP5.addButton("otherButton")
+    otherButton = controlP5.addButton("combinationButton")
                                .setValue(0)
                                .setPosition(10, 680)
                                .setSize(200, 20)
                                .setColorBackground(BUTTON_BACKGROUND)
                                .setColorForeground(BUTTON_FOREGROUND)
                                ;
-    otherButton.captionLabel().set("Other");
+    otherButton.captionLabel().set("Combination Graphs");
     
     backButton = controlP5.addButton("backButton")
                            .setValue(0)

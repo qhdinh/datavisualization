@@ -608,6 +608,19 @@ class Tables{
     
   }
   
+  public void search_name(String ssname)
+  {
+      for(int i=0;i<counnum;i++){
+        if(ssname.equals(combi.counsele[i].name)){
+          println("councode="+i);
+          searchcoun(i);
+          fill(120);
+          text("Find "+ssname+" :)", 900,290);
+          break;
+        }
+      }
+  }
+  
   void searchcoun(int _councode){
     int i,j,shift,xlabelnum,ylabelnum;
     if(counnum>-nupdown+19)ylabelnum=-nupdown+19;

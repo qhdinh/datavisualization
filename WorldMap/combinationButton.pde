@@ -1,4 +1,4 @@
-void otherButton(int value)
+void combinationButton(int value)
 {
     updateListOfChosenCountriesAndCriteria();
     

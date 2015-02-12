@@ -91,6 +91,14 @@ void countryListControlEvent(ControlEvent event){
 
 void chosenCountryListControlEvent(ControlEvent event){
     String itemName = (String)chosenCountryItemHandleMap.get((int)event.value());
-    chosenCountryList.removeItem(itemName);
-    chosenCountryList.updateListBoxItems();
+    if(usedMode == MODE_COMBI)
+    {
+        if(combi.graphnum == 0)
+            combi.tables.search_name(itemName);
+    }
+    else
+    {
+        chosenCountryList.removeItem(itemName);
+        chosenCountryList.updateListBoxItems();
+    }
 }

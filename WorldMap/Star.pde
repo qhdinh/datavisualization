@@ -380,6 +380,22 @@ class Star{
     
   }
   
+  public void search_name(String ssname)
+  {
+      int i;
+      for(i=0;i<counnum;i++){
+        if(ssname.equals(combi.counsele[i].name)){
+          drawsearchline(i);
+          fill(120);
+          text("Find "+ssname+" :)", 940,190);
+          break;
+        }
+      }
+      if(i==counnum)text("Cannot find it :(",940,190);
+      combi.snum=0;  
+  }
+  
+  
   void graphchange(){
     noStroke();
     fill(126,192,238,100);
