@@ -27,7 +27,6 @@ class CorrelationGraph{
     this.Y = Y;
     this.vwidth = vwidth;
     this.vheight = vheight;
-    textSize(11);
     fulldata = new DataRead(sketchPath(mainFolder + "\\factbook.csv"));
 
     smooth();
@@ -40,24 +39,22 @@ class CorrelationGraph{
   
   public int setSelectedCriteria(List<String> strList){
     if(strList.size() != 2){
-      criteriaX = 0;
-      criteriaY = 0;
       return -1;
     }else{
-      int i = 1;
+      int i = 0;
       for(String s: fulldata.columns){
           if(s.equals(strList.get(0)))
               criteriaX = i; 
           i++;
       }
-      i = 1;
+      i = 0;
       for(String s: fulldata.columns){
           if(s.equals(strList.get(1)))
               criteriaY = i; 
           i++;
       }   
-      labelX = strList.get(0);
-      labelY = strList.get(1);
+      labelX = fulldata.columns.get(criteriaX);
+      labelY = fulldata.columns.get(criteriaY);
     }
     return 0;
   
@@ -65,6 +62,7 @@ class CorrelationGraph{
   
   public void draw(){
     //background(255);
+    textSize(11);
     isLogPlotX = cBoxX.checked;
     isLogPlotY = cBoxY.checked;
   
@@ -74,7 +72,7 @@ class CorrelationGraph{
     fill(0);
     line( X + bd, Y + vheight-bd, X + vwidth-bd - 200, Y + vheight-bd );  // x-axis
     textAlign(CENTER,TOP);
-    text( labelX, X + (X+vwidth)/2- 200, Y + vheight-bd );          
+    text( labelX, X + (X+vwidth)/2- 200, Y + vheight-bd + 5 );          
     line( X + bd, Y + bd, X + bd, Y + vheight-bd );  // y-axis
     pushMatrix();
       rotate( radians(-90) );
@@ -116,7 +114,7 @@ class CorrelationGraph{
     //trace 0 lines
     float x0 = (0 - minX)/(maxX-minX);
     float y0 = (0 - minY)/(maxY-minY);
-      
+    textAlign(LEFT);
     cBoxX.draw();
     cBoxY.draw();
     continentLabel.draw();
