@@ -93,35 +93,35 @@ class Mean{
   void drawaxis(){
     fill(120);
     stroke(120);
-    line(350,400,1010,400);
-    line(350,400,350,80);
-    triangle(1010,397,1010,403,1015,400);
-    triangle(347,80,353,80,350,75);
+    line(50,400,710,400);
+    line(50,400,50,80);
+    triangle(710,397,710,403,715,400);
+    triangle(47,80,53,80,50,75);
     int i;
     noStroke();
     fill(240,128,128,100);
-    rect(350,400-0.2*ygapMaxp,660,0.2*ygapMaxp);
+    rect(50,400-0.2*ygapMaxp,660,0.2*ygapMaxp);
     fill(240,128,128,50);
-    rect(350,400-0.4*ygapMaxp,660,0.2*ygapMaxp);
+    rect(50,400-0.4*ygapMaxp,660,0.2*ygapMaxp);
     fill(126,192,238,50);
-    rect(350,400-0.6*ygapMaxp,660,0.2*ygapMaxp);
+    rect(50,400-0.6*ygapMaxp,660,0.2*ygapMaxp);
     fill(126,192,238,100);
-    rect(350,400-0.8*ygapMaxp,660,0.2*ygapMaxp);
+    rect(50,400-0.8*ygapMaxp,660,0.2*ygapMaxp);
     for(i=0;i<crinum;i++){
       stroke(240);
       fill(120);
-      if(i!=0)line(350+i*xgap,399,350+i*xgap,80);
+      if(i!=0)line(50+i*xgap,399,50+i*xgap,80);
       stroke(120);
-      translate(351+i*xgap-5,410);
+      translate(51+i*xgap-5,410);
       rotate(QUARTER_PI);
       text(crisele[i].name,0,0);
       rotate(-QUARTER_PI);
-      translate(-351-i*xgap+5,-410);
+      translate(-51-i*xgap+5,-410);
     }
     fill(120);
-    text("MIN",315,405);
-    text("MAX",315,405-0.8*ygapMaxp);
-    text("Mean",310,405-0.4*ygapMaxp);
+    text("MIN",15,405);
+    text("MAX",15,405-0.8*ygapMaxp);
+    text("Mean",10,405-0.4*ygapMaxp);
   }
   
   void drawline(){
@@ -154,19 +154,19 @@ class Mean{
         
         
       }
-      line(1060,210+i*10,1075,210+i*10);
-      text(counsele[i].name,1080,210+i*10+5);
+      line(740,210+i*10,755,210+i*10);
+      text(counsele[i].name,760,210+i*10+5);
     }
     
     stroke(0);
     fill(120);
     for(j=0;j<crinum;j++){ 
       //if(j!=crinum-1)line(means.xspot[j],means.yspot[j],means.xspot[j+1],means.yspot[j+1]);
-      translate(355+j*xgap,400-ygapMaxp);
+      translate(55+j*xgap,400-ygapMaxp);
       rotate(-QUARTER_PI);
       text(str((float)means.value[j]),0,0);
       rotate(QUARTER_PI);
-      translate(-355-j*xgap,-400+ygapMaxp);
+      translate(-55-j*xgap,-400+ygapMaxp);
     }
     /*translate(55-xgap,400-ygapMax);
     rotate(-QUARTER_PI);
@@ -267,9 +267,9 @@ class Mean{
       }
     }
     //println(pick);
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-520)*(mouseY-520))<3600)clc=1;
+    if(((mouseX-950)*(mouseX-950)+(mouseY-520)*(mouseY-520))<3600)clc=1;
     else clc=0;
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-420)*(mouseY-420))<3600)clct=1;
+    if(((mouseX-950)*(mouseX-950)+(mouseY-420)*(mouseY-420))<3600)clct=1;
     else clct=0;
   }
   
@@ -351,9 +351,9 @@ class Mean{
       
     }
     stroke(0);
-    line(1060,210+_councode*10,1075,210+_councode*10);
+    line(740,210+_councode*10,755,210+_councode*10);
     strokeWeight(1);
-    text(counsele[_councode].name,1080,210+_councode*10+5);
+    text(counsele[_councode].name,760,210+_councode*10+5);
   }
   
   /*void keyPressed(){
@@ -381,11 +381,11 @@ class Mean{
     labelFont1 = loadFont("Dotum-10.vlw");
     int i=0;
     fill(120);
-    text("SEARCH:",1060,100);
-    text("Country's name", 1060,130);
+    text("SEARCH:",740,100);
+    text("Country's name", 740,130);
     if(keyCode==ENTER){
       for(i=0;i<searchname.length;i++){
-        text(searchname[i],1060+i*7,160);
+        text(searchname[i],740+i*7,160);
         if(i<snum && (snum!=0))nametemp[i]=searchname[i];
       }
       
@@ -395,11 +395,11 @@ class Mean{
         if(ssname.equals(counsele[i].name)){
           drawsearchline(i);
           fill(120);
-          text("Find "+ssname+" :)", 1060,190);
+          text("Find "+ssname+" :)", 740,190);
           break;
         }
       }
-      if(i==counnum)text("Cannot find it :(",1060,190);
+      if(i==counnum)text("Cannot find it :(",740,190);
       snum=0;  
     }
     
@@ -408,29 +408,29 @@ class Mean{
   void graphchange(){
     noStroke();
     fill(126,192,238,100);
-    ellipse(1300,520,60,60);
-    ellipse(1300,420,60,60);
+    ellipse(940,520,60,60);
+    ellipse(940,420,60,60);
     if(clc==0)fill(126,192,238,180);
     else fill(160);
-    ellipse(1300,520,55,55);
+    ellipse(940,520,55,55);
     
     if(clct==0)fill(126,192,238,180);
     else fill(160);
-    ellipse(1300,420,55,55);
+    ellipse(940,420,55,55);
     stroke(255);
     strokeWeight(3);
     fill(255);
-    line(1290,410,1310,410);
-    line(1300,410,1300,430);
+    line(930,410,950,410);
+    line(940,410,940,430);
     fill(255,0);
-    triangle(1290,530,1310,530,1300,510);
+    triangle(930,530,950,530,940,510);
     strokeWeight(1);
 
   }
   
   void mouseClicked(){
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-520)*(mouseY-520))<3600)graphnum=2;
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-420)*(mouseY-420))<3600)graphnum=0;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-520)*(mouseY-520))<3600)graphnum=2;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-420)*(mouseY-420))<3600)graphnum=0;
   }
   
 }

@@ -25,32 +25,32 @@ class Label{
       fill(126,192,238);
       noStroke();
       smooth();
-      this.xspot=310;
+      this.xspot=10;
       this.yspot=50+num*20;
       this.lwidth=60;
       this.lheight=19;
-      rect(310,50+num*20,60,19,7,0,0,7);
+      rect(10,50+num*20,60,19,7,0,0,7);
       stroke(255);
-      line(369,50+num*20+19,317,50+num*20+19);
+      line(69,50+num*20+19,17,50+num*20+19);
       fill(255);
       labelFont1 = loadFont("Dotum-14.vlw");
       //textFont(labelFont1,14);
-      text(str,316,50+num*20+14);
+      text(str,16,50+num*20+14);
     }
     if(axis==1){
       fill(126,192,238);
       noStroke();
       smooth();
-      this.xspot=370+num*xgap;
+      this.xspot=70+num*xgap;
       this.yspot=30;
       this.lwidth=xgap-5;
       this.lheight=20;
-      rect(370+num*xgap,30,xgap-5,20,7,7,0,0);
+      rect(70+num*xgap,30,xgap-5,20,7,7,0,0);
       stroke(255);
       fill(255);
       labelFont1 = loadFont("Dotum-14.vlw");
       //textFont(labelFont1,14);
-      text(str,370+num*xgap+5,44);
+      text(str,70+num*xgap+5,44);
     }
   }
   
@@ -64,17 +64,17 @@ class Label{
       }
       noStroke();
       smooth();
-      rect(310,50+num*20,60,19,7,0,0,7);
+      rect(10,50+num*20,60,19,7,0,0,7);
       this.xspot=10;
       this.yspot=50+num*20;
       this.lwidth=60;
       this.lheight=19;
       stroke(255);
-      line(369,50+num*20+19,317,50+num*20+19);
+      line(69,50+num*20+19,17,50+num*20+19);
       fill(255);
       labelFont1 = loadFont("Dotum-14.vlw");
       //textFont(labelFont1,14);
-      text(name,316,50+num*20+14);
+      text(name,16,50+num*20+14);
     }
     if(axis==1){
       if(this.sele==0){
@@ -85,8 +85,8 @@ class Label{
       }
       noStroke();
       smooth();
-      rect(370+num*xgap,30,xgap-5,20,7,7,0,0);
-      this.xspot=370+num*xgap;
+      rect(70+num*xgap,30,xgap-5,20,7,7,0,0);
+      this.xspot=70+num*xgap;
       this.yspot=30;
       this.lwidth=xgap-5;
       this.lheight=20;
@@ -94,7 +94,7 @@ class Label{
       fill(255);
       labelFont1 = loadFont("Dotum-14.vlw");
       //textFont(labelFont1,14);
-      text(name,370+num*xgap+5,44);
+      text(name,70+num*xgap+5,44);
     }
   }
   

@@ -235,8 +235,8 @@ class Star{
         
         }
       }
-      line(310,50+i*10,325,50+i*10);
-      text(counsele[i].name,330,50+i*10+5);
+      line(10,50+i*10,25,50+i*10);
+      text(counsele[i].name,30,50+i*10+5);
     }
     stroke(0);
   }  
@@ -337,9 +337,9 @@ class Star{
       
     }
     stroke(0);
-    line(310,50+_councode*10,325,50+_councode*10);
+    line(10,50+_councode*10,25,50+_councode*10);
     strokeWeight(1);
-    text(counsele[_councode].name,330,50+_councode*10+5);  
+    text(counsele[_councode].name,30,50+_councode*10+5);  
    
   }
   
@@ -387,9 +387,9 @@ class Star{
         }
       }
     }
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-520)*(mouseY-520))<3600)clc=1;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-520)*(mouseY-520))<3600)clc=1;
     else clc=0;
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-420)*(mouseY-420))<3600)clct=1;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-420)*(mouseY-420))<3600)clct=1;
     else clct=0;
     //println(pick);
   }
@@ -414,11 +414,11 @@ class Star{
     //labelFont1 = loadFont("Dotum-12.vlw");
     int i=0;
     fill(120);
-    text("SEARCH:",1240,100);
-    text("Country's name", 1240,130);
+    text("SEARCH:",940,100);
+    text("Country's name", 940,130);
     if(keyCode==ENTER){
       for(i=0;i<searchname.length;i++){
-        text(searchname[i],1240+i*7,160);
+        text(searchname[i],940+i*7,160);
         if(i<snum && (snum!=0))nametemp[i]=searchname[i];
       }
       
@@ -428,11 +428,11 @@ class Star{
         if(ssname.equals(counsele[i].name)){
           drawsearchline(i);
           fill(120);
-          text("Find "+ssname+" :)", 1240,190);
+          text("Find "+ssname+" :)", 940,190);
           break;
         }
       }
-      if(i==counnum)text("Cannot find it :(",1240,190);
+      if(i==counnum)text("Cannot find it :(",940,190);
       snum=0;  
     }
     
@@ -441,33 +441,33 @@ class Star{
   void graphchange(){
     noStroke();
     fill(126,192,238,100);
-    ellipse(1300,520,60,60);
-    ellipse(1300,420,60,60);
+    ellipse(940,520,60,60);
+    ellipse(940,420,60,60);
     if(clc==0)fill(126,192,238,180);
     else fill(120,180);
-    ellipse(1300,520,55,55);
+    ellipse(940,520,55,55);
 
     
     if(clct==0)fill(126,192,238,180);
     else fill(120,180);
-    ellipse(1300,420,55,55);
+    ellipse(940,420,55,55);
     stroke(255);
     strokeWeight(3);
-    line(1285,530,1285,510);
-    line(1285,530,1315,530);
-    line(1295,530,1295,505);
-    line(1305,530,1305,515);
-    line(1315,530,1315,520);
+    line(925,530,925,510);
+    line(925,530,955,530);
+    line(935,530,935,505);
+    line(945,530,945,515);
+    line(955,530,955,520);
     
-    line(1290,410,1310,410);
-    line(1300,410,1300,430);
+    line(930,410,950,410);
+    line(940,410,940,430);
 
     strokeWeight(1);
   }
   
   void mouseClicked(){
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-520)*(mouseY-520))<3600)graphnum=1;
-    if(((mouseX-1300)*(mouseX-1300)+(mouseY-420)*(mouseY-420))<3600)graphnum=0;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-520)*(mouseY-520))<3600)graphnum=1;
+    if(((mouseX-940)*(mouseX-940)+(mouseY-420)*(mouseY-420))<3600)graphnum=0;
   }
   
 }

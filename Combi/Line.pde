@@ -32,7 +32,7 @@ class Line{
   void setspotm(int xgap){
     int i;
     for(i=0;i<this.crinum;i++){
-      xspot[i]=350+i*xgap;
+      xspot[i]=50+i*xgap;
       yspot[i]=400-lent[i];
     }
   }

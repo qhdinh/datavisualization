@@ -3,7 +3,7 @@ Criteria[] crisele;
 Country[] counsele;
 float angapMin = QUARTER_PI/6;
 int rMax = 200;
-int xcentre = 860;
+int xcentre = 560;
 int ycentre = 280;
 PFont labelFont1;
 int snum=0;
@@ -50,9 +50,9 @@ void draw(){
   if(graphnum==0)tables.draw();
   else if(graphnum==1)mean.draw();
   else if(graphnum==2)star.draw();
-  fill(150);
-  rect(0,0,300,1366);
-  rect(0,568,1366,300);
+  //fill(150);
+  //rect(0,0,300,1366);
+  //rect(0,568,1366,300);
   
 }
 
