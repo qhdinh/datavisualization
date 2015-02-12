@@ -2,6 +2,8 @@ Button cartogramButton;
 Button correlationButton;
 Button otherButton;
 Button backButton;
+color BUTTON_BACKGROUND = color(92,64,51,255);
+color BUTTON_FOREGROUND = color(133,94,66,255);
 
 void initializeButtons()
 {    
@@ -9,6 +11,8 @@ void initializeButtons()
                                .setValue(0)
                                .setPosition(10, 630)
                                .setSize(200, 20)
+                               .setColorBackground(BUTTON_BACKGROUND)
+                               .setColorForeground(BUTTON_FOREGROUND)
                                ;
     cartogramButton.captionLabel().set("Cartogram");
     
@@ -17,6 +21,8 @@ void initializeButtons()
                                .setValue(100)
                                .setPosition(10, 655)
                                .setSize(200, 20)
+                               .setColorBackground(BUTTON_BACKGROUND)
+                               .setColorForeground(BUTTON_FOREGROUND)
                                ;
     correlationButton.captionLabel().set("Correlation");
     
@@ -24,6 +30,8 @@ void initializeButtons()
                                .setValue(0)
                                .setPosition(10, 680)
                                .setSize(200, 20)
+                               .setColorBackground(BUTTON_BACKGROUND)
+                               .setColorForeground(BUTTON_FOREGROUND)
                                ;
     otherButton.captionLabel().set("Other");
     
@@ -31,6 +39,8 @@ void initializeButtons()
                            .setValue(0)
                            .setPosition(10, 705)
                            .setSize(200, 20)
+                           .setColorBackground(BUTTON_BACKGROUND)
+                           .setColorForeground(BUTTON_FOREGROUND)
                            ;
     backButton.captionLabel().set("Back to map");
 }
