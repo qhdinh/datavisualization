@@ -82,16 +82,14 @@ boolean sketchFullScreen() {
 static final int MODE_CARTOGRAM = 0;
 static final int MODE_CORRELATION = 1;
 static final int MODE_OTHER = 2;
-
+boolean firstCorrelationButtonCall = true;
 int usedMode = MODE_CARTOGRAM;
 
 void setup() {
     PFont labelFont = loadFont("ArialMT-30.vlw");
     textFont(labelFont, textHeight);    
     size(screenWidth, screenHeight);
-
     initialize();
-    
 }
 
 void draw() {

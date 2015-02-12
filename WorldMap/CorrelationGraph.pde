@@ -15,11 +15,12 @@ class CorrelationGraph{
   float minY;
   ArrayList<DataPoint> dataplot;
 
-  CategorySelector catSelector1, catSelector2;
   checkBox cBoxX, cBoxY;
   graphLabel continentLabel;
 
   public int X , Y, vwidth, vheight;
+  public int criteriaX, criteriaY;
+  String labelX, labelY;
   
   public CorrelationGraph(int X, int Y, int vwidth, int vheight){
     this.X = X;
@@ -28,13 +29,37 @@ class CorrelationGraph{
     this.vheight = vheight;
     textSize(11);
     fulldata = new DataRead(sketchPath(mainFolder + "\\factbook.csv"));
-    catSelector1 = new CategorySelector(fulldata, X + vwidth -200, Y + 20, "X axis");
-    catSelector2 = new CategorySelector(fulldata, X + vwidth -200, Y + 55, "Y axis");
+
     smooth();
     cBoxX = new checkBox(X + vwidth - 50, Y + vheight - 50, false, "Log plot X:");
     cBoxY = new checkBox(X + vwidth - 50, Y + vheight - 30, false, "Log plot Y:");
     
     continentLabel = new graphLabel(X + vwidth-100,Y + vheight - 250);
+  
+  }
+  
+  public int setSelectedCriteria(List<String> strList){
+    if(strList.size() != 2){
+      criteriaX = 0;
+      criteriaY = 0;
+      return -1;
+    }else{
+      int i = 1;
+      for(String s: fulldata.columns){
+          if(s.equals(strList.get(0)))
+              criteriaX = i; 
+          i++;
+      }
+      i = 1;
+      for(String s: fulldata.columns){
+          if(s.equals(strList.get(1)))
+              criteriaY = i; 
+          i++;
+      }   
+      labelX = strList.get(0);
+      labelY = strList.get(1);
+    }
+    return 0;
   
   }
   
@@ -49,14 +74,14 @@ class CorrelationGraph{
     fill(0);
     line( X + bd, Y + vheight-bd, X + vwidth-bd - 200, Y + vheight-bd );  // x-axis
     textAlign(CENTER,TOP);
-    text( catSelector1.getSelectedName(), X + (X+vwidth)/2- 200, Y + vheight-bd );          
+    text( labelX, X + (X+vwidth)/2- 200, Y + vheight-bd );          
     line( X + bd, Y + bd, X + bd, Y + vheight-bd );  // y-axis
     pushMatrix();
       rotate( radians(-90) );
-      text( catSelector2.getSelectedName(), -Y-(vheight/2), X );
+      text( labelY, -Y-(vheight/2), X );
     popMatrix();
     
-    dataplot = fulldata.getData(catSelector1.getCode(), catSelector2.getCode());
+    dataplot = fulldata.getData(criteriaX, criteriaY);
   
     maxX = fulldata.getMaxX(dataplot);
     minX = fulldata.getMinX(dataplot);
@@ -91,8 +116,6 @@ class CorrelationGraph{
     //trace 0 lines
     float x0 = (0 - minX)/(maxX-minX);
     float y0 = (0 - minY)/(maxY-minY);
-    catSelector2.Draw();
-    catSelector1.Draw();
       
     cBoxX.draw();
     cBoxY.draw();
@@ -105,10 +128,7 @@ class CorrelationGraph{
      ymouse = ymouse - Y;
      if(dataplot == null) return;
        float max = 10;
-       
-       catSelector2.mouseOver(xmouse,ymouse);
-       catSelector1.mouseOver(xmouse,ymouse);
-       
+              
        DataPoint selectedDP = null;
        for(DataPoint dp : dataplot){
           float px = (dp.x - minX)/(maxX-minX);
@@ -133,8 +153,6 @@ class CorrelationGraph{
   
   public void mousePressed(int x, int y)
   {
-    catSelector1.click(x, y);
-    catSelector2.click(x, y);
     cBoxX.click(x, y);
     cBoxY.click(x, y);
     continentLabel.click(x, y);
