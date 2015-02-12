@@ -2,8 +2,8 @@ int    COUNTRY_LIST_LEFT                 = 1077;
 int    COUNTRY_LIST_TOP                  = 27;
 int    COUNTRY_LIST_WIDTH                = 280;
 int    COUNTRY_LIST_HEIGHT               = 350;
-color  COUNTRY_LIST_BACKGROUND           = color(51,102,153,255);//(24,116,205, 255);
-color  COUNTRY_LIST_FOREGROUND           = color(0,154,205,255);//(16,78,139, 255);//color(255, 100, 0, 255);
+color  COUNTRY_LIST_BACKGROUND           = color(94,38,18,255);//color(51,102,153,255);//(24,116,205, 255);
+color  COUNTRY_LIST_FOREGROUND           = color(205,55,0,255);//color(0,154,205,255);//(16,78,139, 255);//color(255, 100, 0, 255);
 int    COUNTRY_LIST_ITEM_HEIGHT          = 20;
 int    COUNTRY_LIST_BAR_HEIGHT           = 20;
 
@@ -11,8 +11,8 @@ int    CHOSEN_COUNTRY_LIST_LEFT          = 500;
 int    CHOSEN_COUNTRY_LIST_TOP           = 650;
 int    CHOSEN_COUNTRY_LIST_WIDTH         = 280;
 int    CHOSEN_COUNTRY_LIST_HEIGHT        = 120;
-color  CHOSEN_COUNTRY_LIST_BACKGROUND    = color(51,102,153,255);
-color  CHOSEN_COUNTRY_LIST_FOREGROUND    = color(0,154,205,255);
+color  CHOSEN_COUNTRY_LIST_BACKGROUND    = color(94,38,18,255);//color(139,37,0,255);//color(51,102,153,255);
+color  CHOSEN_COUNTRY_LIST_FOREGROUND    = color(205,55,0,255);//color(0,154,205,255);
 int    CHOSEN_COUNTRY_LIST_ITEM_HEIGHT   = 20;
 int    CHOSEN_COUNTRY_LIST_BAR_HEIGHT    = 20;
 

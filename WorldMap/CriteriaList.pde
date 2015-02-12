@@ -2,8 +2,8 @@ int    CRITERIA_LIST_LEFT                 = 1077;
 int    CRITERIA_LIST_TOP                  = 395;
 int    CRITERIA_LIST_WIDTH                = 280;
 int    CRITERIA_LIST_HEIGHT               = 350;
-color  CRITERIA_LIST_BACKGROUND           = color(0,139,69,255);//(46,139,87, 255);
-color  CRITERIA_LIST_FOREGROUND           = color(60,179,113,255);//(92,64,51,255);//(255, 100, 0, 255);
+color  CRITERIA_LIST_BACKGROUND           = color(40,40,40,255);//color(0,139,69,255);//(46,139,87, 255);
+color  CRITERIA_LIST_FOREGROUND           = color(205,55,0,255);//color(92,64,51,255);//color(60,179,113,255);//(92,64,51,255);//(255, 100, 0, 255);
 int    CRITERIA_LIST_ITEM_HEIGHT          = 20;
 int    CRITERIA_LIST_BAR_HEIGHT           = 20;
 
@@ -11,8 +11,8 @@ int    CHOSEN_CRITERIA_LIST_LEFT          = 790;
 int    CHOSEN_CRITERIA_LIST_TOP           = 650;
 int    CHOSEN_CRITERIA_LIST_WIDTH         = 280;
 int    CHOSEN_CRITERIA_LIST_HEIGHT        = 120;
-color  CHOSEN_CRITERIA_LIST_BACKGROUND    = color(0,139,69,255);
-color  CHOSEN_CRITERIA_LIST_FOREGROUND    = color(60,179,113,255);
+color  CHOSEN_CRITERIA_LIST_BACKGROUND    = color(40,40,40,255);//color(92,64,51,255);//color(0,139,69,255);
+color  CHOSEN_CRITERIA_LIST_FOREGROUND    = color(205,55,0,255);//color(92,64,51,255);//color(133,94,66,255);//color(60,179,113,255);
 int    CHOSEN_CRITERIA_LIST_ITEM_HEIGHT   = 20;
 int    CHOSEN_CRITERIA_LIST_BAR_HEIGHT    = 20;
 
