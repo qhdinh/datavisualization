@@ -29,6 +29,7 @@ class Tables{
   public Tables(){
     datasets = new DataReadCombi();
     combi.labelFont1 = loadFont("Dotum-14.vlw");
+    textFont(combi.labelFont1);
     fill(30,144,255);
     findscale();
   }
@@ -571,7 +572,7 @@ class Tables{
     }
     fill(120);
     combi.labelFont1 = loadFont("Dotum-14.vlw");
-    //textFont(combi.labelFont1,14);
+    textFont(combi.labelFont1,14);
     text("Sorting",910,106);
     text(sortcri,880,136);
     

@@ -16,6 +16,7 @@ class Mean{
   public Mean(){
     //size(880,570);
     combi.labelFont1 = loadFont("Dotum-10.vlw");
+    textFont(combi.labelFont1);
     //textFont(labelFont1,10);
     datasets = new DataReadCombi();
     
@@ -154,8 +155,8 @@ class Mean{
         
         
       }
-      line(740,210+i*10,755,210+i*10);
-      text(combi.counsele[i].name,760,210+i*10+5);
+      line(740,210+i*15,755,210+i*15);
+      text(combi.counsele[i].name,760,210+i*15+5);
     }
     
     stroke(0);
@@ -351,9 +352,9 @@ class Mean{
       
     }
     stroke(0);
-    line(740,210+_councode*10,755,210+_councode*10);
+    line(740,210+_councode*15,755,210+_councode*15);
     strokeWeight(1);
-    text(combi.counsele[_councode].name,760,210+_councode*10+5);
+    text(combi.counsele[_councode].name,760,210+_councode*15+5);
   }
   
   /*void keyPressed(){
