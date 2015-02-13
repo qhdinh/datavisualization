@@ -271,7 +271,7 @@ public class Map extends GUIControl
     
     public void writeScreenBordersToFile(BufferedWriter bufferWriter)
     {
-        try{
+       /* try{
             for(Country country : countries)
             {
                 bufferWriter.write(country.regions.size() + "\r\n");                
@@ -287,6 +287,6 @@ public class Map extends GUIControl
         }
         catch (IOException e)
         {
-        }
+        }*/
     }
 }

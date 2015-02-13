@@ -113,7 +113,7 @@ void getCountryInfo()
 
 void WriteToFile()
 {
-    for(int i = 1; i < countryFields.length; ++i)
+    /*for(int i = 1; i < countryFields.length; ++i)
     {
         try {
             String fileName = countryFields[i].replace("/","");
@@ -141,6 +141,6 @@ void WriteToFile()
         {
             System.out.println("Error");
         }
-    }
+    }*/
     
 }
