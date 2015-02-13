@@ -2,7 +2,7 @@ Button cartogramButton;
 Button correlationButton;
 Button otherButton;
 Button backButton;
-color BUTTON_BACKGROUND = color(71,71,71,255);//color(176,23,31,255);//color(0,104,139,255);//color(51,102,153,255);//color(92,64,51,255);
+color BUTTON_BACKGROUND = color(91,91,91,255);//color(176,23,31,255);//color(0,104,139,255);//color(51,102,153,255);//color(92,64,51,255);
 color BUTTON_FOREGROUND = color(40,40,40,255);//color(0,154,205,255);//color(133,94,66,255);
 
 void initializeButtons()

@@ -112,8 +112,8 @@ public class Region
         color usedSurfaceColor = country.countryColor;
         switch (state) {
             case GUIControl.STATE_NORMAL:
-                //usedBorderColor = color(255, 255, 255, 255);
-                usedBorderColor = country.countryColor;//color(0, 0, 0, 255);
+                usedBorderColor = color(18,140,18,255);
+                //usedBorderColor = country.countryColor;//color(0, 0, 0, 255);
                 break;
             case GUIControl.STATE_HOVER:
                 usedBorderColor = color(255, 255, 0, 255);
