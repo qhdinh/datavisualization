@@ -49,13 +49,28 @@ int midY = (0 + screenHeight) / 2;
 //Main folder of the project containing all the necessary data to draw the map
 String mainFolder = "data";
 
-color[] countryColors = new color[]{ color(105, 211, 105), color(50, 195, 50, 255),
-                                    color(20, 135, 20, 255),color(0, 155, 40, 255), 
+//color[] countryColors = new color[]{ color(105, 211, 105), color(50, 195, 50, 255),
+//                                    color(20, 135, 20, 255),color(0, 155, 40, 255), 
+//                                     //color(48, 128, 20,255),
+//                                     color(0,175,0, 255)//
+//                                   };
+
+color[] countryColors = new color[]{ color(135,195,105, 255), color(212, 232, 160, 255),
+                                    color(105, 211, 105,255),color(0, 155, 40, 255),//color(99, 177, 80, 255),// 
                                      //color(48, 128, 20,255),
-                                     color(0,175,0, 255)//
+                                     color(253, 253, 190, 255)//
                                    };
+
+//color[] countryColors = new color[]{ color(135, 195, 105), color(212, 232, 160, 255),
+//                                    color(0,175,0, 255), color(99, 177, 80, 255),
+//                                     //color(48, 128, 20,255),
+//                                     //
+//                                     color(253, 253, 190, 255)
+//                                   };
+                                   
                                     
 //Color of the seas
+//color seaColor = color(170, 225, 230, 255);
 color seaColor = color(194, 223, 255, 255);//color(77, 210, 255, 100);
 color controlsBackgroundColor = color(255, 255, 255, 255);
 
