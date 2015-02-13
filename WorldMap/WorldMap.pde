@@ -96,9 +96,9 @@ boolean firstCorrelationButtonCall = true;
 boolean firstCombiButtonCall = true;
 
 //Turn on full-screen mode
-boolean sketchFullScreen() {
+/*boolean sketchFullScreen() {
     return true;
-}
+}*/
 
 static final int MODE_CARTOGRAM = 0;
 static final int MODE_CORRELATION = 1;
