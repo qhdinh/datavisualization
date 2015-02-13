@@ -116,14 +116,16 @@ public class Region
                 //usedBorderColor = country.countryColor;//color(0, 0, 0, 255);
                 break;
             case GUIControl.STATE_HOVER:
-                usedBorderColor = color(255, 255, 0, 255);
+                usedBorderColor = color(18,140,18,255);
+                //usedBorderColor = color(255, 255, 0, 255);
                 usedSurfaceColor = color(min(red(usedSurfaceColor) + 50, 255),
                                          min(green(usedSurfaceColor) + 50, 255),
                                          min(blue(usedSurfaceColor) + 50, 255),
                                          255);
                 break;
             case GUIControl.STATE_CLICKED:
-                usedBorderColor = color(255, 255, 0, 255);
+                usedBorderColor = color(18,140,18,255);
+                //usedBorderColor = color(255, 255, 0, 255);
                 usedSurfaceColor = color(min(red(usedSurfaceColor) + 50, 255),
                                          min(green(usedSurfaceColor) + 50, 255),
                                          min(blue(usedSurfaceColor) + 50, 255),

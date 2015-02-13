@@ -60,6 +60,7 @@ class Star{
                xrtoxy(combi.rMax,i*angap-PI/180),yrtoxy(combi.rMax,i*angap-PI/180),
                xrtoxy(combi.rMax,i*angap+PI/180),yrtoxy(combi.rMax,i*angap+PI/180));
       combi.labelFont1 = loadFont("Dotum-12.vlw");
+      textFont(combi.labelFont1);
       //textFont(labelFont1,12); 
   
       if(i*angap>=HALF_PI && i*angap<PI){
@@ -177,8 +178,8 @@ class Star{
         
         }
       }
-      line(10,50+i*10,25,50+i*10);
-      text(combi.counsele[i].name,30,50+i*10+5);
+      line(10,50+i*15,25,50+i*15);
+      text(combi.counsele[i].name,30,50+i*15+5);
     }
     stroke(0);
   }  
@@ -279,9 +280,9 @@ class Star{
       
     }
     stroke(0);
-    line(10,50+_councode*10,25,50+_councode*10);
+    line(10,50+_councode*15,25,50+_councode*15);
     strokeWeight(1);
-    text(combi.counsele[_councode].name,30,50+_councode*10+5);  
+    text(combi.counsele[_councode].name,30,50+_councode*15+5);  
    
   }
   
